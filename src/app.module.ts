@@ -9,6 +9,8 @@ import { RefreshTokensModule } from './components/usersComponent/refresh-tokens/
 import { SubscriptionPeriodsModule } from './components/subscriptionComponent/subscription-periods/subscription-periods.module'
 import { SubscriptionsModule } from './components/subscriptionComponent/subscriptions/subscriptions.module'
 import { LoggerModule } from './components/loggerComponent/logger/logger.module'
+import { RobokassaModule } from './components/paymentComponent/robokassa/robokassa.module'
+import { StripeModule } from './components/paymentComponent/stripe/stripe.module'
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { LoggerModule } from './components/loggerComponent/logger/logger.module'
     SubscriptionsModule,
     SubscriptionPeriodsModule,
     LoggerModule,
+    RobokassaModule,
+    StripeModule
   ],
 })
 export class AppModule {}
