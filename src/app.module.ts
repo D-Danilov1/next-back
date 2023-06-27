@@ -1,16 +1,17 @@
-import { Module } from '@nestjs/common'
-import { SequelizeModule } from '@nestjs/sequelize'
-import { UsersModule } from './components/usersComponent/users/users.module'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { RolesModule } from './components/usersComponent/roles/roles.module'
-import { AuthorizationModule } from './components/usersComponent/authorization/authorization.module'
-import { InitializerModule } from './components/initializerComponent/initializer/initializer.module'
-import { RefreshTokensModule } from './components/usersComponent/refresh-tokens/refresh-tokens.module'
-import { SubscriptionPeriodsModule } from './components/subscriptionComponent/subscription-periods/subscription-periods.module'
-import { SubscriptionsModule } from './components/subscriptionComponent/subscriptions/subscriptions.module'
-import { LoggerModule } from './components/loggerComponent/logger/logger.module'
-import { RobokassaModule } from './components/paymentComponent/robokassa/robokassa.module'
-import { StripeModule } from './components/paymentComponent/stripe/stripe.module'
+import { Module } from '@nestjs/common';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { UsersModule } from './components/usersComponent/users/users.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RolesModule } from './components/usersComponent/roles/roles.module';
+import { AuthorizationModule } from './components/usersComponent/authorization/authorization.module';
+import { InitializerModule } from './components/initializerComponent/initializer/initializer.module';
+import { RefreshTokensModule } from './components/usersComponent/refresh-tokens/refresh-tokens.module';
+import { SubscriptionPeriodsModule } from './components/subscriptionComponent/subscription-periods/subscription-periods.module';
+import { SubscriptionsModule } from './components/subscriptionComponent/subscriptions/subscriptions.module';
+import { LoggerModule } from './components/loggerComponent/logger/logger.module';
+import { RobokassaModule } from './components/paymentComponent/robokassa/robokassa.module';
+import { StripeModule } from './components/paymentComponent/stripe/stripe.module';
+import { StripeWebhookController } from './components/paymentComponent/stripeWebhook/StripeWebhookController';
 
 @Module({
   imports: [
@@ -41,7 +42,8 @@ import { StripeModule } from './components/paymentComponent/stripe/stripe.module
     SubscriptionPeriodsModule,
     LoggerModule,
     RobokassaModule,
-    StripeModule
+    StripeModule,
   ],
+  controllers: [StripeWebhookController],
 })
 export class AppModule {}

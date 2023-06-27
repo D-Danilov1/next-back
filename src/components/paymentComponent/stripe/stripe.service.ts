@@ -10,7 +10,6 @@ export class StripeService {
     // @ts-ignore
     this.stripe = new Stripe(
       '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',
-      // 'sk_test_51KtvkHHb8NpiNcYOE0foBq6PBZuwVkDrrUwg7EhPWmafq7xqlUaFDcQMDZhP4LaDJOnJDz8aD5GE64C9Iud9kZGH00kM3NVuqH',
     );
   }
 
@@ -32,6 +31,10 @@ export class StripeService {
     } catch (error) {
       throw new Error(error.message);
     }
+  }
+  async updatePrice(id: string, metadata: { order_id: string }) {
+    const price = await this.stripe.prices.update(id, { metadata });
+    return price;
   }
 
   async createCustomer(

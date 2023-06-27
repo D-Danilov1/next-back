@@ -1,5 +1,5 @@
 import { StripeService } from './stripe.service';
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Param, Patch, Post, Res } from '@nestjs/common';
 
 @Controller('/stripe')
 export class StripeController {
@@ -20,6 +20,14 @@ export class StripeController {
     } catch (error) {
       return res.status(400).send({ error: { message: error.message } });
     }
+  }
+
+  @Patch('prices/:id')
+  async updatePrice(
+    @Param('id') id: string,
+    @Body() metadata: { order_id: string },
+  ) {
+    return this.stripeService.updatePrice(id, metadata);
   }
 
   @Post('/create-customer')
