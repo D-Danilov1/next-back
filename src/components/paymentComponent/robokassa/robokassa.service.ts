@@ -8,11 +8,11 @@ export class RobokassaService {
 
   async getPaymentLink(amount): Promise<string> {
     const inv_id = 5;
-    const out_sum = String(0.1);
+    const out_sum = String(1.20);
     // Number(amount).toFixed(2);
 
     const crc = this.generateCRC(out_sum, inv_id, this.mrh_pass1);
-    const url = `https://auth.robokassa.ru/Merchant/Index.aspx?MerchantLogin=${this.mrh_login}&OutSum=${out_sum}&InvId=${inv_id}&Description=desc&SignatureValue=${crc}`;
+    const url = `https://auth.robokassa.ru/Merchant/Index.aspx?MerchantLogin=${this.mrh_login}&OutSum=${out_sum}&InvId=${inv_id}&Description=4234@mail.ru&SignatureValue=${crc}`;
 
     return url;
   }
