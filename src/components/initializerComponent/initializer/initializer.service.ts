@@ -85,7 +85,6 @@ export class InitializerService {
     if (account === null) {
       const user: Users = await this.usersService.create({
         email: 'admin@gmail.com',
-        password: 'adminAdmin',
       })
 
       await this.usersService.addRoleToUser({
@@ -101,7 +100,6 @@ export class InitializerService {
     if (account === null) {
       await this.usersService.create({
         email: 'user@gmail.com',
-        password: 'userUser',
       })
     }
   }

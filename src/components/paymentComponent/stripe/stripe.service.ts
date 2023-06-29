@@ -9,8 +9,21 @@ export class StripeService {
   constructor() {
     // @ts-ignore
     this.stripe = new Stripe(
-      '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',
+      // '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',
+      'sk_test_51KtvkHHb8NpiNcYOE0foBq6PBZuwVkDrrUwg7EhPWmafq7xqlUaFDcQMDZhP4LaDJOnJDz8aD5GE64C9Iud9kZGH00kM3NVuqH',
     );
+  }
+
+  async cancelSubscription(subscriptionId: string) {
+    try {
+      const deletedSubscription = await this.stripe.subscriptions.del(
+        subscriptionId,
+      );
+      return deletedSubscription;
+    } catch (error) {
+      throw new Error('Failed to cancel subscription.');
+    }
+
   }
 
   async createSubscription(customerId: string, priceId: string) {

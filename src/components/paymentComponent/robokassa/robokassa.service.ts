@@ -1,49 +1,45 @@
 import { Injectable } from '@nestjs/common';
-import * as md5 from 'md5';
 
 @Injectable()
 export class RobokassaService {
-  private readonly mrhPass1: string;
-  private readonly mrhPass2: string;
+  private readonly mrh_login = 'NextSubscriptions';
+  private readonly mrh_pass1 = 'fztd03mSDyfZiy2f30cW';
+  private readonly mrh_pass2 = 'LPBzYi4DP8rz09tle2Es';
 
-  constructor() {
-    this.mrhPass1 = process.env.MERCHANT_PASS1;
-    this.mrhPass2 = process.env.MERCHANT_PASS1; // TODO ADD PASSWORD
+  async getPaymentLink(amount): Promise<string> {
+    const inv_id = 5;
+    const out_sum = String(0.1);
+    // Number(amount).toFixed(2);
+
+    const crc = this.generateCRC(out_sum, inv_id, this.mrh_pass1);
+    const url = `https://auth.robokassa.ru/Merchant/Index.aspx?MerchantLogin=${this.mrh_login}&OutSum=${out_sum}&InvId=${inv_id}&Description=desc&SignatureValue=${crc}`;
+
+    return url;
   }
 
-  async getPaymentUrl(amount, description) {
-    const merchantLogin = process.env.MERCHANT_LOGIN;
-    const merchantPass1 = process.env.MERCHANT_PASS1;
-
-    const invoiceId = 0;
-    const culture = 'ru';
-    const outSum = 2000;
-    const isRecurring = true;
-
-    const signatureValue = md5(
-      `${merchantLogin}:${outSum}:${invoiceId}:${merchantPass1}`,
-    );
-
-    return `https://auth.robokassa.ru/Merchant/Index.aspx?MerchantLogin=${merchantLogin}&InvoiceID=${invoiceId}&Culture=${culture}&Encoding=utf-8&OutSum=${outSum}&shp_interface=field&SignatureValue=${signatureValue}&Description=${description}&Recurring=${isRecurring}`;
+  private generateCRC(
+    out_sum: string,
+    inv_id: number,
+    mrh_pass: string,
+  ): string {
+    const crc = require('crypto')
+      .createHash('md5')
+      .update(`${this.mrh_login}:${out_sum}:${inv_id}:${mrh_pass}`)
+      .digest('hex');
+    return crc;
   }
 
-  async verifyResultUrl(params: any) {
+  async verifyResultURL(params: Record<string, string>) {
     const { OutSum, InvId, SignatureValue } = params;
+    const my_crc = this.generateCRC(OutSum, +InvId, this.mrh_pass2);
 
-    const myCrc = this.generateCRC(`${OutSum}:${InvId}:${this.mrhPass2}`);
-
-    return myCrc === SignatureValue.toUpperCase();
+    return my_crc.toUpperCase() === SignatureValue.toUpperCase();
   }
 
-  async verifySuccessUrl(params: any) {
+  async verifySuccessURL(params: Record<string, string>) {
     const { OutSum, InvId, SignatureValue } = params;
+    const my_crc = this.generateCRC(OutSum, +InvId, this.mrh_pass1);
 
-    const myCrc = this.generateCRC(`${OutSum}:${InvId}:${this.mrhPass1}`);
-
-    return myCrc === SignatureValue.toUpperCase();
-  }
-
-  private generateCRC(data: string): string {
-    return md5(data).toUpperCase();
+    return my_crc.toUpperCase() === SignatureValue.toUpperCase();
   }
 }

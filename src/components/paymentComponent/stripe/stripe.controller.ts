@@ -77,4 +77,9 @@ export class StripeController {
       return res.status(400).send({ error: { message: error.message } });
     }
   }
+
+  @Post('/cancel')
+  async cancelSubscription(@Body() body: { subscriptionId: string }) {
+    return this.stripeService.cancelSubscription(body.subscriptionId);
+  }
 }

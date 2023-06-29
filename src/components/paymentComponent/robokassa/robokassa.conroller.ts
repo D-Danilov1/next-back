@@ -1,30 +1,45 @@
-import { Body, Controller, Get, HttpStatus, Query, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Query,
+  Res,
+} from '@nestjs/common';
 import { RobokassaService } from './robokassa.service';
 
 @Controller('/robokassa')
 export class RobokassaController {
   constructor(protected service: RobokassaService) {}
 
-  @Get('/payment-url')
+  @Post('/payment-url')
   async getPaymentUrl(
     @Body('amount') amount: number,
-    @Body('description') description: string,
   ): Promise<{ response: string; statusCode: number }> {
     return {
       statusCode: HttpStatus.OK,
-      response: await this.service.getPaymentUrl(amount, description),
+      response: await this.service.getPaymentLink(amount),
     };
   }
 
   @Get('/result-url')
-  verifyResultUrl(@Query() params: any, @Res() res) {
-    const isVerified = this.service.verifyResultUrl(params);
-    return res.send({ isVerified });
+  async verifyResultUrl(@Query() params: any, @Res() res) {
+    const isVerified = await this.service.verifyResultURL(params);
+    if (isVerified) {
+      return res.send({ success: true });
+    } else {
+      return res.send({ success: false });
+    }
   }
 
   @Get('/success-url')
-  verifySuccessUrl(@Query() params: any, @Res() res) {
-    const isVerified = this.service.verifySuccessUrl(params);
-    return res.send({ isVerified });
+  async verifySuccessUrl(@Query() params: any, @Res() res) {
+    const isVerified = await this.service.verifySuccessURL(params);
+    if (isVerified) {
+      return res.send({ success: true });
+    } else {
+      return res.send({ success: false });
+    }
   }
 }
