@@ -11,8 +11,7 @@ export class RobokassaService {
 
   async getPaymentLink(amount): Promise<string> {
     const inv_id = await this.invCounterService.getNewInvId();
-    const out_sum = '1.23' 
-    // Number(amount).toFixed(2);
+    const out_sum = Number(amount).toFixed(2);
 
     const crc = this.generateCRC(out_sum, inv_id, this.mrh_pass1);
     const url = `https://auth.robokassa.ru/Merchant/Index.aspx?MerchantLogin=${this.mrh_login}&OutSum=${out_sum}&InvId=${inv_id}&Description=Next@mail.ru&SignatureValue=${crc}`;

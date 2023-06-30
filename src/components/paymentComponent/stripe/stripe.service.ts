@@ -1,4 +1,4 @@
-import { Body, Injectable, Post, Res } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { Stripe } from 'stripe';
 
@@ -23,7 +23,6 @@ export class StripeService {
     } catch (error) {
       throw new Error('Failed to cancel subscription.');
     }
-
   }
 
   async createSubscription(customerId: string, priceId: string) {
