@@ -12,6 +12,7 @@ import { LoggerModule } from './components/loggerComponent/logger/logger.module'
 import { RobokassaModule } from './components/paymentComponent/robokassa/robokassa.module';
 import { StripeModule } from './components/paymentComponent/stripe/stripe.module';
 import { StripeWebhookController } from './components/paymentComponent/stripeWebhook/StripeWebhookController';
+import { InvCounterModule } from './components/paymentComponent/invCounter/invCounter.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { StripeWebhookController } from './components/paymentComponent/stripeWeb
     LoggerModule,
     RobokassaModule,
     StripeModule,
+    InvCounterModule,
   ],
   controllers: [StripeWebhookController],
 })

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { InvCounterService } from '../invCounter/invCounter.service';
 
 @Injectable()
 export class RobokassaService {
@@ -6,12 +7,14 @@ export class RobokassaService {
   private readonly mrh_pass1 = 'fztd03mSDyfZiy2f30cW';
   private readonly mrh_pass2 = 'LPBzYi4DP8rz09tle2Es';
 
+  constructor(private invCounterService: InvCounterService) {}
+
   async getPaymentLink(amount): Promise<string> {
-    const inv_id = 5;
+    const inv_id = await this.invCounterService.getNewInvId();
     const out_sum = Number(amount).toFixed(2);
 
     const crc = this.generateCRC(out_sum, inv_id, this.mrh_pass1);
-    const url = `https://auth.robokassa.ru/Merchant/Index.aspx?MerchantLogin=${this.mrh_login}&OutSum=${out_sum}&InvId=${inv_id}@mail.ru&SignatureValue=${crc}`;
+    const url = `https://auth.robokassa.ru/Merchant/Index.aspx?MerchantLogin=${this.mrh_login}&OutSum=${out_sum}&InvId=${inv_id}&Description=Next@mail.ru&SignatureValue=${crc}`;
 
     return url;
   }
