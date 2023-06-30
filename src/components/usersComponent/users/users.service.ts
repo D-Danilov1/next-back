@@ -23,74 +23,57 @@ export class UsersService extends EntityService<Users> {
   ) {
     super(repository, 'Users', loggerService);
     this.transporter = nodemailer.createTransport({
-      host: 'webmail.mydomain.in',
+      service: 'gmail',
       port: 465,
+      secure: true,
+      secureConnection: false,
       auth: {
-        user: 'noreply@nextworkoutapp.com',
-        pass: 'gg-G!,f6FtQh',
+        user: 'noreply.nextapp@gmail.com',
+        pass: 'bqdlzetdkhshyspm',
+      },
+      tls: {
+        rejectUnauthorized: true,
       },
     });
   }
 
   async sendMail(to: string, subject: string, text: string): Promise<void> {
     await this.transporter.sendMail({
-      from: 'your_email@example.com',
+      from: 'noreply.nextapp@gmail.com',
       to,
       subject,
       text,
     });
   }
 
-  // async generateAndSendPassword(dto) {
-  //   // Генерируем случайный пароль
-  //   const password = Math.random().toString(36).slice(-10); // Генерация 10-символьного случайного пароля
+  async generateAndSendPassword(dto) {
+    const password = Math.random().toString(36).slice(-10);
 
-  //   // Отправляем пароль на почту
-  //   const transporter = createTransport({
-  //     host: 'webmail.mydomain.in',
-  //     port: 465,
-  //     secure: true,
-  //     auth: {
-  //       user: 'noreply@nextworkoutapp.com',
-  //       pass: 'gg-G!,f6FtQh',
-  //     },
-  //   });
+    await this.sendMail(
+      dto.email,
+      'Your password',
+      `Your password is: ${password}`,
+    );
 
-  //   const mailOptions = {
-  //     from: 'noreply@nextworkoutapp.com',
-  //     to: dto.email,
-  //     subject: 'Your Password',
-  //     text: `Your generated password is: ${password}`,
-  //   };
-  //   console.log(1);
-  //   await transporter.sendMail(mailOptions, function (error, info) {
-  //     if (error) {
-  //       console.log(error);
-  //     } else {
-  //       console.log('Email sent: ' + info.response);
-  //     }
-  //   });
-  //   console.log(2);
-
-  //   return password;
-  // }
+    return password;
+  }
 
   async create(dto: CreateUsersDto): Promise<Users> {
     const candidate: Users = await this.repository.findOne({
       where: { email: dto.email },
     });
-    // const passwordGen = await this.generateAndSendPassword(dto);
+
     if (candidate) {
       return candidate;
     }
 
-    const password = '1234567890';
+    const passwordGen = await this.generateAndSendPassword(dto);
 
     const id: string = await randomUUID();
     const user: Users = await this.repository.create({
       id: id,
       ...dto,
-      password,
+      password: passwordGen,
     });
 
     const role: Roles = await this.rolesService.findByName(ROLES.USER);
