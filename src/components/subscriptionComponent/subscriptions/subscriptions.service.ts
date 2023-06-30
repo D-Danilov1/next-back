@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common'
-import { InjectModel } from '@nestjs/sequelize'
-import { Subscriptions } from './models/subscriptions.model'
-import { EntityService } from '../../../classes/core/entity.service'
-import { Users } from '../../usersComponent/users/models/users.model'
-import { UsersService } from '../../usersComponent/users/users.service'
-import { CreateSubscriptionsDto } from './dto/create-subscriptions.dto'
-import { LoggerService } from '../../loggerComponent/logger/logger.service'
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { Subscriptions } from './models/subscriptions.model';
+import { EntityService } from '../../../classes/core/entity.service';
+import { Users } from '../../usersComponent/users/models/users.model';
+import { UsersService } from '../../usersComponent/users/users.service';
+import { CreateSubscriptionsDto } from './dto/create-subscriptions.dto';
+import { LoggerService } from '../../loggerComponent/logger/logger.service';
 
 @Injectable()
 export class SubscriptionsService extends EntityService<Subscriptions> {
@@ -14,19 +14,35 @@ export class SubscriptionsService extends EntityService<Subscriptions> {
     private usersService: UsersService,
     protected loggerService: LoggerService,
   ) {
-    super(repository, 'Subscriptions', loggerService)
+    super(repository, 'Subscriptions', loggerService);
   }
 
   async create(dto: CreateSubscriptionsDto): Promise<Subscriptions> {
-    const user: Users = await this.usersService.findByEmail(dto.userEmail)
+    const user: Users = await this.usersService.findByEmail(dto.userEmail);
 
     await this.loggerService?.create({
       user_id: user.id,
       method_name: 'Create',
       model_name: 'Subscriptions',
-      props: JSON.stringify(dto)
-    })
+      props: JSON.stringify(dto),
+    });
 
-    return await this.repository.create({ ...dto, user_id: user.id })
+    return await this.repository.create({ ...dto, user_id: user.id });
+  }
+  async hasSubscriptionEnded(userEmail: string): Promise<boolean> {
+    if (!userEmail) return;
+    const user: Users = await this.usersService.findByEmail(userEmail);
+
+    const subscription: Subscriptions | null = await this.repository.findOne({
+      where: { user_id: user.id },
+    });
+
+    if (!subscription) {
+      return false;
+    }
+
+    const currentDate: Date = new Date();
+    const endOfSubscription: Date = new Date(subscription.end_of);
+    return currentDate > endOfSubscription;
   }
 }
