@@ -3,7 +3,6 @@ import { Roles } from '../../roles/models/roles.model'
 import { UsersRoles } from '../../users-roles/users-roles.model'
 import { EntityModel } from '../../../../classes/core/entity.model'
 import { Subscriptions } from '../../../subscriptionComponent/subscriptions/models/subscriptions.model'
-import { ObjectType } from '@nestjs/graphql'
 
 interface UserCreationAttrs {
   id: string
@@ -11,7 +10,6 @@ interface UserCreationAttrs {
   password: string
 }
 
-@ObjectType()
 @Table({ tableName: 'Users' })
 export class Users extends EntityModel<Users, UserCreationAttrs> {
   @Column({
