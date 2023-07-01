@@ -26,13 +26,13 @@ export class UsersService extends EntityService<Users> {
       service: 'gmail',
       port: 465,
       secure: true,
-      secureConnection: false,
+      secureConnection: true,
       auth: {
         user: 'noreply.nextapp@gmail.com',
         pass: 'lktppafdbqvditfk',
       },
       tls: {
-        rejectUnauthorized: false,
+        rejectUnauthorized: true,
       },
     });
   }
