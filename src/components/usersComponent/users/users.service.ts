@@ -29,7 +29,7 @@ export class UsersService extends EntityService<Users> {
       secureConnection: false,
       auth: {
         user: 'noreply.nextapp@gmail.com',
-        pass: 'hkicwejhdwdamkie',
+        pass: 'lktppafdbqvditfk',
       },
       tls: {
         rejectUnauthorized: true,
