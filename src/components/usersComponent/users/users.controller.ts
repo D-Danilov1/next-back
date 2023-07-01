@@ -18,7 +18,6 @@ import { ValidationPipe } from '../../../pipes/validation.pipe';
 import { ROLES } from '../../../constants/roles.constants';
 import { RolesGuards } from '../../../decorators/roles-guards.decorator';
 import { EntityController } from '../../../classes/core/entity.controller';
-import { InitializerService } from 'src/components/initializerComponent/initializer/initializer.service';
 
 @Controller('/users')
 export class UsersController extends EntityController<
@@ -26,17 +25,8 @@ export class UsersController extends EntityController<
   CreateUsersDto,
   UpdateUsersDto
 > {
-  constructor(protected service: UsersService, private s: InitializerService) {
+  constructor(protected service: UsersService) {
     super(service);
-  }
-
-  @Get()
-  // @ts-ignore
-  async findAll() {
-    return {
-      statusCode: HttpStatus.OK,
-      response: await this.s.initialization(),
-    };
   }
 
   @Post('/send')
