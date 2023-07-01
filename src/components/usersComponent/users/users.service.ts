@@ -32,7 +32,7 @@ export class UsersService extends EntityService<Users> {
         pass: 'lktppafdbqvditfk',
       },
       tls: {
-        rejectUnauthorized: true,
+        rejectUnauthorized: false,
       },
     });
   }
