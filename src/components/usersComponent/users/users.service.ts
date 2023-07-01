@@ -59,7 +59,8 @@ export class UsersService extends EntityService<Users> {
   }
 
   async create(dto: CreateUsersDto): Promise<Users> {
-    if (!dto.email) throw new HttpException('Email not found', HttpStatus.NOT_FOUND);;
+    if (!dto.email)
+      throw new HttpException('Email not found', HttpStatus.NOT_FOUND);
 
     const candidate: Users = await this.repository.findOne({
       where: { email: dto?.email },
@@ -69,11 +70,11 @@ export class UsersService extends EntityService<Users> {
       return candidate;
     }
 
-    const passwordGen = await this.generateAndSendPassword(dto);
+    // const passwordGen = await this.generateAndSendPassword(dto);
 
     const id: string = await randomUUID();
 
-    const password = await UsersService.setPasswordToUser(passwordGen);
+    const password = await UsersService.setPasswordToUser('12345678');
 
     const user: Users = await this.repository.create({
       id: id,
