@@ -9,7 +9,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.use(cookieParser());
   app.enableCors({
-    origin: true,
+    origin: 'http://89.108.76.13',
     methods: 'GET,PUT,POST,DELETE',
     credentials: true,
   });
