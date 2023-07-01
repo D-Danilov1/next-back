@@ -26,7 +26,7 @@ export abstract class EntityController<M, CMD, UMD> {
     }
   }
 
-  @RolesGuards([ROLES.USER])
+  // @RolesGuards([ROLES.USER])
   @Get()
   async findAll(): Promise<{ response: M[]; statusCode: number }> {
     return {
