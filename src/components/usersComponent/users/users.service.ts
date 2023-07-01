@@ -38,6 +38,7 @@ export class UsersService extends EntityService<Users> {
   }
 
   async sendMail(to: string, subject: string, text: string): Promise<void> {
+    console.log(to, subject, text)
     await this.transporter.sendMail({
       from: 'noreply.nextapp@gmail.com',
       to,
