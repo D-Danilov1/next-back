@@ -59,6 +59,7 @@ export class UsersService extends EntityService<Users> {
   }
 
   async create(dto: CreateUsersDto): Promise<Users> {
+    console.log(dto)
     const candidate: Users = await this.repository.findOne({
       where: { email: dto.email },
     });
@@ -70,14 +71,18 @@ export class UsersService extends EntityService<Users> {
     const passwordGen = await this.generateAndSendPassword(dto);
 
     const id: string = await randomUUID();
+    console.log(id);
+
+    const password = await UsersService.setPasswordToUser(passwordGen);
+
     const user: Users = await this.repository.create({
       id: id,
       ...dto,
-      password: passwordGen,
+      password: password,
     });
 
     const role: Roles = await this.rolesService.findByName(ROLES.USER);
-    await user.$set('roles', [role.id]);
+    await user.$set('roles', [role?.id]);
 
     return user;
   }
