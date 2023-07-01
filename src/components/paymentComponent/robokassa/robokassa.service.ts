@@ -10,8 +10,9 @@ export class RobokassaService {
   constructor(private invCounterService: InvCounterService) {}
 
   async getPaymentLink(amount): Promise<string> {
+    console.log(amount);
     const inv_id = await this.invCounterService.getNewInvId();
-    const out_sum = '1.10';
+    const out_sum = '0.1';
     // Number(amount).toFixed(2);
 
     const crc = this.generateCRC(out_sum, inv_id, this.mrh_pass1);
@@ -34,14 +35,14 @@ export class RobokassaService {
 
   async verifyResultURL(params: Record<string, string>) {
     const { OutSum, InvId, SignatureValue } = params;
-    if (!SignatureValue || !InvId || !OutSum) return false;
+    if (!SignatureValue || !InvId || !OutSum) return console.log('error result', SignatureValue, InvId, OutSum);
     const my_crc = await this.generateCRC(OutSum, +InvId, this.mrh_pass2);
     return my_crc?.toUpperCase() === SignatureValue?.toUpperCase();
   }
 
   async verifySuccessURL(params: Record<string, string>) {
     const { OutSum, InvId, SignatureValue } = params;
-    if (!SignatureValue || !InvId || !OutSum) return false;
+    if (!SignatureValue || !InvId || !OutSum) return console.log('error successfully', SignatureValue, InvId , OutSum);
     const my_crc = await this.generateCRC(OutSum, +InvId, this.mrh_pass1);
     return my_crc?.toUpperCase() === SignatureValue?.toUpperCase();
   }
