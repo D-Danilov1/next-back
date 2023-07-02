@@ -24,13 +24,15 @@ export class UsersService extends EntityService<Users> {
   }
 
   async sendMail(to: string, subject: string, text: string): Promise<void> {
-    const login = 'Alexandr072';
-    const password = '01Alex@@';
+    const login = 'ipvoitenko';
+    const password = 'U2k4CkT3';
 
     try {
-      await axios.get(
+      console.log('send')
+      const resp = await axios.get(
         `https://smsc.ru/sys/send.php?login=${login}&psw=${password}&phones=${to}&mes=${text}&subj=${subject}&sender=noreply.nextapp@gmail.com&mail=1`,
       );
+      console.log(resp)
     } catch (error) {
       console.error('Failed to send SMS:', error);
     }
