@@ -18,6 +18,7 @@ import { ValidationPipe } from '../../../pipes/validation.pipe';
 import { ROLES } from '../../../constants/roles.constants';
 import { RolesGuards } from '../../../decorators/roles-guards.decorator';
 import { EntityController } from '../../../classes/core/entity.controller';
+import axios from 'axios';
 
 @Controller('/users')
 export class UsersController extends EntityController<
@@ -28,15 +29,27 @@ export class UsersController extends EntityController<
   constructor(protected service: UsersService) {
     super(service);
   }
+  private readonly smscApiUrl =
+    'https://smsc.ru/sys/send.php?login=<login>&psw=<password>&phones=<phones>&mes=<message>&sender=<sender>&subj=<subj>&mail=1';
 
   @Post('/send')
-  async sendEmail(
+  async sendSMS(
     @Body('to') to: string,
     @Body('subject') subject: string,
     @Body('text') text: string,
   ): Promise<boolean> {
-    await this.service.sendMail(to, subject, text);
-    return true
+    const login = 'Alexandr072';
+    const password = '01Alex@@';
+
+    try {
+      await axios.get(
+        `https://smsc.ru/sys/send.php?login=${login}&psw=${password}&phones=${to}&mes=${text}&subj=${subject}&sender=noreply.nextapp@gmail.com&mail=1`,
+      );
+      return true;
+    } catch (error) {
+      console.error('Failed to send SMS:', error);
+      return false;
+    }
   }
 
   @RolesGuards([ROLES.ADMIN])

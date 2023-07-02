@@ -11,39 +11,29 @@ import * as bcrypt from 'bcryptjs';
 import { Roles } from '../roles/models/roles.model';
 import { LoggerService } from '../../loggerComponent/logger/logger.service';
 import * as nodemailer from 'nodemailer';
+import axios from 'axios';
 
 @Injectable()
 export class UsersService extends EntityService<Users> {
-  private transporter: nodemailer.Transporter;
-
   constructor(
     @InjectModel(Users) protected repository: typeof Users,
     private rolesService: RolesService,
     protected loggerService: LoggerService,
   ) {
     super(repository, 'Users', loggerService);
-    this.transporter = nodemailer.createTransport({
-      service: 'gmail',
-      port: 465,
-      secure: false,
-      secureConnection: false,
-      auth: {
-        user: 'noreply.nextapp@gmail.com',
-        pass: 'lktppafdbqvditfk',
-      },
-      tls: {
-        rejectUnauthorized: true,
-      },
-    });
   }
 
   async sendMail(to: string, subject: string, text: string): Promise<void> {
-    await this.transporter.sendMail({
-      from: 'noreply.nextapp@gmail.com',
-      to,
-      subject,
-      text,
-    });
+    const login = 'Alexandr072';
+    const password = '01Alex@@';
+
+    try {
+      await axios.get(
+        `https://smsc.ru/sys/send.php?login=${login}&psw=${password}&phones=${to}&mes=${text}&subj=${subject}&sender=noreply.nextapp@gmail.com&mail=1`,
+      );
+    } catch (error) {
+      console.error('Failed to send SMS:', error);
+    }
   }
 
   async generateAndSendPassword(dto) {
@@ -59,7 +49,8 @@ export class UsersService extends EntityService<Users> {
   }
 
   async create(dto: CreateUsersDto): Promise<Users> {
-    if (!dto.email) throw new HttpException('Email not found', HttpStatus.NOT_FOUND);;
+    if (!dto.email)
+      throw new HttpException('Email not found', HttpStatus.NOT_FOUND);
 
     const candidate: Users = await this.repository.findOne({
       where: { email: dto?.email },
