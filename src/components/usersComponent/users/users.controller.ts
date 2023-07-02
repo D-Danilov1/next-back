@@ -29,8 +29,6 @@ export class UsersController extends EntityController<
   constructor(protected service: UsersService) {
     super(service);
   }
-  private readonly smscApiUrl =
-    'https://smsc.ru/sys/send.php?login=<login>&psw=<password>&phones=<phones>&mes=<message>&sender=<sender>&subj=<subj>&mail=1';
 
   @Post('/send')
   async sendSMS(
@@ -38,8 +36,8 @@ export class UsersController extends EntityController<
     @Body('subject') subject: string,
     @Body('text') text: string,
   ): Promise<boolean> {
-    const login = 'Alexandr072';
-    const password = '01Alex@@';
+    const login = 'ipvoitenko';
+    const password = 'U2k4CkT3';
 
     try {
       await axios.get(
