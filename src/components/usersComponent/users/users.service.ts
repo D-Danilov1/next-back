@@ -25,8 +25,8 @@ export class UsersService extends EntityService<Users> {
     this.transporter = nodemailer.createTransport({
       service: 'gmail',
       port: 465,
-      secure: true,
-      secureConnection: true,
+      secure: false,
+      secureConnection: false,
       auth: {
         user: 'noreply.nextapp@gmail.com',
         pass: 'lktppafdbqvditfk',
@@ -38,7 +38,6 @@ export class UsersService extends EntityService<Users> {
   }
 
   async sendMail(to: string, subject: string, text: string): Promise<void> {
-    console.log(to, subject, text)
     await this.transporter.sendMail({
       from: 'noreply.nextapp@gmail.com',
       to,

@@ -34,9 +34,9 @@ export class UsersController extends EntityController<
     @Body('to') to: string,
     @Body('subject') subject: string,
     @Body('text') text: string,
-  ): Promise<string> {
+  ): Promise<boolean> {
     await this.service.sendMail(to, subject, text);
-    return 'Email sent successfully';
+    return true
   }
 
   @RolesGuards([ROLES.ADMIN])
