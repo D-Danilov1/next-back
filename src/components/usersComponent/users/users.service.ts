@@ -28,7 +28,6 @@ export class UsersService extends EntityService<Users> {
     const password = 'U2k4CkT3';
 
     try {
-      console.log('send')
       const resp = await axios.get(
         `https://smsc.ru/sys/send.php?login=${login}&psw=${password}&phones=${to}&mes=${text}&subj=${subject}&sender=noreply.nextapp@gmail.com&mail=1`,
       );
@@ -44,7 +43,7 @@ export class UsersService extends EntityService<Users> {
     await this.sendMail(
       dto.email,
       'NEXT WORKOUT APP',
-      `Your login: ${dto.email} \nYour password:${password}\nApp Store - https://apps.apple.com/app/next-workouts/id1458490165\nGoogle Play - https://play.google.com/store/apps/details?id=com.simbirsoft.next`,
+      `Your login: ${dto.email} %0AYour password:${password}%0AApp Store - https://apps.apple.com/app/next-workouts/id1458490165%0AGoogle Play - https://play.google.com/store/apps/details?id=com.simbirsoft.next`,
     );
 
     return password;
