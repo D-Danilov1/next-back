@@ -9,7 +9,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.use(cookieParser());
   app.enableCors({
-    origin: true,
+    origin: 'https://www.next-payment.site',
     methods: 'GET,PUT,POST,DELETE',
     credentials: true,
   });
