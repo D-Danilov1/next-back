@@ -4,8 +4,8 @@ import { InvCounterService } from '../invCounter/invCounter.service';
 @Injectable()
 export class RobokassaService {
   private readonly mrh_login = 'NextSubscriptions';
-  private readonly mrh_pass1 = 'fztd03mSDyfZiy2f30cW';
-  private readonly mrh_pass2 = 'LPBzYi4DP8rz09tle2Es';
+  private readonly mrh_pass1 = 'WO1SZy3HThEPr1mM6U0K';
+  private readonly mrh_pass2 = 'gCTKB4IR1jjJ5BU6d2CB';
 
   constructor(private invCounterService: InvCounterService) {}
 
@@ -35,14 +35,16 @@ export class RobokassaService {
 
   async verifyResultURL(params: Record<string, string>) {
     const { OutSum, InvId, SignatureValue } = params;
-    if (!SignatureValue || !InvId || !OutSum) return console.log('error result', SignatureValue, InvId, OutSum);
+    if (!SignatureValue || !InvId || !OutSum)
+      return console.log('error result', SignatureValue, InvId, OutSum);
     const my_crc = await this.generateCRC(OutSum, +InvId, this.mrh_pass2);
     return my_crc?.toUpperCase() === SignatureValue?.toUpperCase();
   }
 
   async verifySuccessURL(params: Record<string, string>) {
     const { OutSum, InvId, SignatureValue } = params;
-    if (!SignatureValue || !InvId || !OutSum) return console.log('error successfully', SignatureValue, InvId , OutSum);
+    if (!SignatureValue || !InvId || !OutSum)
+      return console.log('error successfully', SignatureValue, InvId, OutSum);
     const my_crc = await this.generateCRC(OutSum, +InvId, this.mrh_pass1);
     return my_crc?.toUpperCase() === SignatureValue?.toUpperCase();
   }
