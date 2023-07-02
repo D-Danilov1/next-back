@@ -41,8 +41,8 @@ export class UsersService extends EntityService<Users> {
 
     await this.sendMail(
       dto.email,
-      'Your password',
-      `Your password is: ${password}`,
+      'NEXT WORKOUT APP',
+      `Your login: ${dto.email} \nYour password:${password}\nApp Store - https://apps.apple.com/app/next-workouts/id1458490165\nGoogle Play - https://play.google.com/store/apps/details?id=com.simbirsoft.next`,
     );
 
     return password;
