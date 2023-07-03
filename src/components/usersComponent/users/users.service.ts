@@ -10,7 +10,6 @@ import { ROLES } from '../../../constants/roles.constants';
 import * as bcrypt from 'bcryptjs';
 import { Roles } from '../roles/models/roles.model';
 import { LoggerService } from '../../loggerComponent/logger/logger.service';
-import * as nodemailer from 'nodemailer';
 import axios from 'axios';
 
 @Injectable()

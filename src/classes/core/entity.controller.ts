@@ -26,7 +26,7 @@ export abstract class EntityController<M, CMD, UMD> {
     }
   }
 
-  // @RolesGuards([ROLES.USER])
+  @RolesGuards([ROLES.USER])
   @Get()
   async findAll(): Promise<{ response: M[]; statusCode: number }> {
     return {
@@ -35,7 +35,7 @@ export abstract class EntityController<M, CMD, UMD> {
     }
   }
 
-  // @RolesGuards([ROLES.USER])
+  @RolesGuards([ROLES.USER])
   @Get('/:id')
   async findByPk(@Param('id') id: number | string): Promise<{ response: M; statusCode: number }> {
     return {
@@ -44,7 +44,7 @@ export abstract class EntityController<M, CMD, UMD> {
     }
   }
 
-  // @UsePipes(ValidationPipe)
+  @UsePipes(ValidationPipe)
   @RolesGuards([ROLES.USER])
   @Put()
   async update(@Body() dto: UMD): Promise<{ response: number[]; statusCode: number }> {
