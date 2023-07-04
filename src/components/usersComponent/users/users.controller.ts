@@ -54,7 +54,7 @@ export class UsersController extends EntityController<
   @Get('/email/:email')
   async findByEmail(
     @Param('email') email: string,
-  ): Promise<{ response: Users; statusCode: number }> {
+  ): Promise<{ response: Users | false; statusCode: number }> {
     return {
       statusCode: HttpStatus.OK,
       response: await this.service.findByEmail(email),

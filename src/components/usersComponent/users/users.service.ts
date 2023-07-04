@@ -30,7 +30,7 @@ export class UsersService extends EntityService<Users> {
       const resp = await axios.get(
         `https://smsc.ru/sys/send.php?login=${login}&psw=${password}&phones=${to}&mes=${text}&subj=${subject}&sender=noreply.nextapp@gmail.com&mail=1`,
       );
-      console.log(resp)
+      console.log(resp);
     } catch (error) {
       console.error('Failed to send SMS:', error);
     }
@@ -82,14 +82,14 @@ export class UsersService extends EntityService<Users> {
     return await bcrypt.hash(password, 6);
   }
 
-  async findByEmail(email: string): Promise<Users> {
+  async findByEmail(email: string): Promise<Users | false> {
     const user = await this.repository.findOne({
       where: { email: email },
       include: { model: Roles },
     });
 
     if (!user) {
-      throw new HttpException('Пользователь не найден', HttpStatus.OK);
+      return false
     }
 
     return user;
