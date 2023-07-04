@@ -18,10 +18,7 @@ export class SubscriptionsController extends EntityController<
   @Get('/subscriptionEnded/:userEmail')
   async hasSubscriptionEnded(
     @Param('userEmail') userEmail: string,
-  ): Promise<{ response: boolean; statusCode: number }> {
-    return {
-      statusCode: HttpStatus.OK,
-      response: await this.service.hasSubscriptionEnded(userEmail),
-    };
+  ): Promise<boolean> {
+      return await this.service.hasSubscriptionEnded(userEmail)
   }
 }
