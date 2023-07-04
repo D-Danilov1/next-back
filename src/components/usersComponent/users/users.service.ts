@@ -89,7 +89,7 @@ export class UsersService extends EntityService<Users> {
     });
 
     if (!user) {
-      throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
+      throw new HttpException('Пользователь не найден', HttpStatus.OK);
     }
 
     return user;

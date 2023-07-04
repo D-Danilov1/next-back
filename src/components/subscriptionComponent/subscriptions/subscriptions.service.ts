@@ -33,10 +33,6 @@ export class SubscriptionsService extends EntityService<Subscriptions> {
     if (!userEmail) return false;
     const user: Users = await this.usersService.findByEmail(userEmail);
 
-    if (!user) {
-      return false;
-    }
-
     const subscription: Subscriptions | null = await this.repository.findOne({
       where: { user_id: user.id },
     });
