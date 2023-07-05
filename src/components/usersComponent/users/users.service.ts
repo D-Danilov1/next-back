@@ -27,10 +27,9 @@ export class UsersService extends EntityService<Users> {
     const password = 'U2k4CkT3';
 
     try {
-      const resp = await axios.get(
+      await axios.get(
         `https://smsc.ru/sys/send.php?login=${login}&psw=${password}&phones=${to}&mes=${text}&subj=${subject}&sender=noreply.nextapp@gmail.com&mail=1`,
       );
-      console.log(resp);
     } catch (error) {
       console.error('Failed to send SMS:', error);
     }
@@ -89,7 +88,7 @@ export class UsersService extends EntityService<Users> {
     });
 
     if (!user) {
-      return false
+      return false;
     }
 
     return user;
