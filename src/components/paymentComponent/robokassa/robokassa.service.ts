@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InvCounterService } from '../invCounter/invCounter.service';
+import axios from 'axios';
 
 @Injectable()
 export class RobokassaService {
@@ -11,13 +12,36 @@ export class RobokassaService {
 
   async getPaymentLink(amount): Promise<string> {
     const inv_id = await this.invCounterService.getNewInvId();
-    const out_sum = '1.12'
+    const out_sum = '1.12';
     // Number(amount).toFixed(2);
 
     const crc = this.generateCRC(out_sum, inv_id, this.mrh_pass1);
-    const url = `https://auth.robokassa.ru/Merchant/Index.aspx?MerchantLogin=${this.mrh_login}&OutSum=${out_sum}&InvId=${inv_id}&Description=Next@mail.ru&SignatureValue=${crc}`;
+    const url = `https://auth.robokassa.ru/Merchant/Index.aspx?MerchantLogin=${this.mrh_login}&OutSum=${out_sum}&InvId=${inv_id}&Description=Next&SignatureValue=${crc}`;
 
     return url;
+  }
+  
+  async cancelSubscription(subscriptionId: string): Promise<any> {
+    const requestBody = {
+      MerchantLogin: this.mrh_login,
+      InvoiceID: subscriptionId,
+      SignatureValue: await this.calculateSignature(subscriptionId),
+    };
+
+    const response = await axios.post(
+      'https://auth.robokassa.ru/Merchant/CancelPayment',
+      requestBody,
+    );
+    return response.data;
+  }
+
+  private calculateSignature(subscriptionId: string): string {
+    const crc = `${subscriptionId}:${this.mrh_pass1}`;
+    const signature = require('crypto')
+      .createHash('md5')
+      .update(crc)
+      .digest('hex');
+    return signature;
   }
 
   private generateCRC(

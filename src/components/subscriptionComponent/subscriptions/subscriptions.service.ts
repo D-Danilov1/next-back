@@ -22,7 +22,7 @@ export class SubscriptionsService extends EntityService<Subscriptions> {
       dto.userEmail,
     );
     if (!user) return;
-    
+
     await this.loggerService?.create({
       user_id: user.id,
       method_name: 'Create',

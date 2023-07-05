@@ -23,6 +23,20 @@ export class RobokassaController {
     };
   }
 
+  @Post('/cancel')
+  async cancelSubscription(
+    @Body('subscriptionId') subscriptionId: string,
+  ): Promise<any> {
+    try {
+      const response = await this.service.cancelSubscription(
+        subscriptionId,
+      );
+      return response;
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
+
   @Get('/result-url')
   async verifyResultUrl(@Query() params: any, @Res() res) {
     const isVerified = await this.service.verifyResultURL(params);
