@@ -21,7 +21,7 @@ export class InvCounterService extends EntityService<InvCounter> {
       defaults: {
         id: await randomUUID(),
         // @ts-ignore
-        inv_id: 45,
+        inv_id: 50,
       },
     });
 
