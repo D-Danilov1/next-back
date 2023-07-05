@@ -42,6 +42,6 @@ export class Subscriptions extends EntityModel<
   @Column({ type: DataType.DATE, allowNull: false })
   end_of: string;
   
-  @Column({ type: DataType.STRING, allowNull: true }) // Добавлен столбец для subscription_id
+  @Column({ type: DataType.STRING, allowNull: true })
   subscription_id: string;
 }

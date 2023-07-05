@@ -30,5 +30,5 @@ export class CreateSubscriptionsDto {
 
   @IsOptional()
   @IsString({ message: 'The value must be a string' })
-  readonly subscriptions_id?: string;
+  readonly subscription_id?: string;
 }
