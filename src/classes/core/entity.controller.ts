@@ -17,7 +17,7 @@ export abstract class EntityController<M, CMD, UMD> {
   protected constructor(protected service: EntityService<M>) {}
 
   @UsePipes(ValidationPipe)
-  // @RolesGuards([ROLES.USER])
+  @RolesGuards([ROLES.USER])
   @Post()
   async create(@Body() dto: CMD): Promise<{ response: M; statusCode: HttpStatus.CREATED }> {
     return {
@@ -26,7 +26,7 @@ export abstract class EntityController<M, CMD, UMD> {
     }
   }
 
-  // @RolesGuards([ROLES.USER])
+  @RolesGuards([ROLES.USER])
   @Get()
   async findAll(): Promise<{ response: M[]; statusCode: number }> {
     return {

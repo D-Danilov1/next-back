@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
 import { SubscriptionsService } from './subscriptions.service';
 import { Subscriptions } from './models/subscriptions.model';
 import { CreateSubscriptionsDto } from './dto/create-subscriptions.dto';
@@ -26,5 +26,19 @@ export class SubscriptionsController extends EntityController<
     @Param('userEmail') userEmail: string,
   ): Promise<boolean> {
     return await this.service.hasSubscriptionEnded(userEmail);
+  }
+
+  @ApiCreatedResponse({
+    description:
+      'Find subscription is successfully',
+  })
+  @Get('/:id')
+  async findByUserId(
+    @Param('id') id: number | string,
+  ): Promise<{ response: Subscriptions; statusCode: number }> {
+    return {
+      statusCode: HttpStatus.OK,
+      response: await this.service.findByUserId(id),
+    };
   }
 }

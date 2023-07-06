@@ -1,6 +1,8 @@
 import { Controller, Post, Req, Res, HttpStatus } from '@nestjs/common';
+import { ApiExcludeController, ApiOperation } from '@nestjs/swagger';
 import { Stripe } from 'stripe';
 
+@ApiExcludeController()
 @Controller('webhook')
 export class StripeWebhookController {
   private stripe: Stripe;
@@ -13,6 +15,7 @@ export class StripeWebhookController {
     );
   }
 
+  @ApiOperation({ summary: 'Handle Stripe Webhook' })
   @Post()
   async handleWebhook(@Req() req, @Res() res) {
     try {
@@ -29,7 +32,7 @@ export class StripeWebhookController {
       // Review important events for Billing webhooks
       // https://stripe.com/docs/billing/webhooks
       // Remove comment to see the various objects sent for this sample
-      console.log(event.type)
+      console.log(event.type);
       switch (event.type) {
         case 'invoice.paid':
           // Used to provision services after the trial has ended.

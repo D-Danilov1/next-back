@@ -1,23 +1,42 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { Token } from 'src/classes/authorization/jwt/token';
+import { SubscriptionsService } from 'src/components/subscriptionComponent/subscriptions/subscriptions.service';
+import { UsersService } from 'src/components/usersComponent/users/users.service';
 
 import { Stripe } from 'stripe';
 
 @Injectable()
 export class StripeService {
   private stripe: Stripe;
+  private token: Token;
 
-  constructor() {
+  constructor(
+    config: ConfigService,
+    private usersService: UsersService,
+    private subscriptionsService: SubscriptionsService,
+  ) {
     // @ts-ignore
     this.stripe = new Stripe(
       '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',
-      // 'sk_test_51KtvkHHb8NpiNcYOE0foBq6PBZuwVkDrrUwg7EhPWmafq7xqlUaFDcQMDZhP4LaDJOnJDz8aD5GE64C9Iud9kZGH00kM3NVuqH',
     );
+    this.token = new Token(config);
   }
 
-  async cancelSubscription(subscriptionId: string) {
+  async cancelSubscription(userEmail: string) {
     try {
+      const user = await this.usersService.findByEmail(userEmail);
+
+      if (!user) return;
+
+      const subscription = await this.subscriptionsService.findByUserId(
+        user.id,
+      );
+
+      if (!subscription) return;
+
       const deletedSubscription = await this.stripe.subscriptions.del(
-        subscriptionId,
+        subscription.subscription_id,
       );
       return deletedSubscription;
     } catch (error) {
@@ -45,18 +64,11 @@ export class StripeService {
     }
   }
 
-  async createCustomer(
-    email: string,
-    name: string,
-    address: any,
-    shipping: any,
-  ) {
+  async createCustomer(email: string, name: string) {
     try {
       const customer = await this.stripe.customers.create({
         email,
         name,
-        address,
-        shipping,
       });
 
       return customer;

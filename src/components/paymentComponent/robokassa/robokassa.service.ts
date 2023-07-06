@@ -12,8 +12,7 @@ export class RobokassaService {
 
   async getPaymentLink(amount): Promise<string> {
     const inv_id = await this.invCounterService.getNewInvId();
-    const out_sum = '1.00';
-    // Number(amount).toFixed(2);
+    const out_sum = Number(amount).toFixed(2);
 
     const crc = this.generateCRC(out_sum, inv_id, this.mrh_pass1);
     const url = `https://auth.robokassa.ru/Merchant/Index.aspx?MerchantLogin=${this.mrh_login}&OutSum=${out_sum}&InvId=${inv_id}&Description=Next&SignatureValue=${crc}`;
@@ -56,7 +55,7 @@ export class RobokassaService {
     return crc;
   }
 
-  async verifyResultURL(params: Record<string, string>) {
+  async verifyResultURL(params) {
     const { OutSum, InvId, SignatureValue } = params;
     if (!SignatureValue || !InvId || !OutSum)
       return console.log('error result', SignatureValue, InvId, OutSum);
@@ -64,7 +63,7 @@ export class RobokassaService {
     return my_crc?.toUpperCase() === SignatureValue?.toUpperCase();
   }
 
-  async verifySuccessURL(params: Record<string, string>) {
+  async verifySuccessURL(params) {
     const { OutSum, InvId, SignatureValue } = params;
     if (!SignatureValue || !InvId || !OutSum)
       return console.log('error successfully', SignatureValue, InvId, OutSum);

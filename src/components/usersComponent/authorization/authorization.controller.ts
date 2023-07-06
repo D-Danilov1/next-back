@@ -69,7 +69,7 @@ export class AuthorizationController {
     @Res(passthrough) response: Response,
   ): Promise<{ response: number; statusCode: HttpStatus.OK }> {
     const { refreshToken } = request.cookies;
-
+ 
     response.clearCookie('refreshToken');
 
     return {

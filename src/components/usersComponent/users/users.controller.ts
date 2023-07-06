@@ -5,7 +5,6 @@ import {
   Get,
   HttpStatus,
   Param,
-  Post,
   Put,
   UsePipes,
 } from '@nestjs/common';
@@ -18,8 +17,8 @@ import { ValidationPipe } from '../../../pipes/validation.pipe';
 import { ROLES } from '../../../constants/roles.constants';
 import { RolesGuards } from '../../../decorators/roles-guards.decorator';
 import { EntityController } from '../../../classes/core/entity.controller';
-
 import { ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
+
 @ApiTags('Users')
 @Controller('/users')
 export class UsersController extends EntityController<

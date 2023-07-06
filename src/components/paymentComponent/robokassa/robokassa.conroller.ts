@@ -9,6 +9,12 @@ import {
 } from '@nestjs/common';
 import { RobokassaService } from './robokassa.service';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import {
+  GetPaymentUrlDto,
+  CancelSubscriptionDto,
+  VerifyResultUrlDto,
+  VerifySuccessUrlDto,
+} from './dto/robokassa.dto';
 
 @ApiTags('Robokassa')
 @Controller('/robokassa')
@@ -18,8 +24,9 @@ export class RobokassaController {
   @ApiCreatedResponse({ description: 'Payment link successfully received' })
   @Post('/payment-url')
   async getPaymentUrl(
-    @Body('amount') amount: number,
+    @Body() getPaymentUrlDto: GetPaymentUrlDto,
   ): Promise<{ response: string; statusCode: number }> {
+    const { amount } = getPaymentUrlDto;
     return {
       statusCode: HttpStatus.OK,
       response: await this.service.getPaymentLink(amount),
@@ -29,9 +36,10 @@ export class RobokassaController {
   @ApiCreatedResponse({ description: 'Subscription canceled successfully' })
   @Post('/cancel')
   async cancelSubscription(
-    @Body('subscriptionId') subscriptionId: string,
+    @Body() cancelSubscriptionDto: CancelSubscriptionDto,
   ): Promise<any> {
     try {
+      const { subscriptionId } = cancelSubscriptionDto;
       const response = await this.service.cancelSubscription(subscriptionId);
       return response;
     } catch (error) {
@@ -41,8 +49,11 @@ export class RobokassaController {
 
   @ApiCreatedResponse({ description: 'Payment completed successfully' })
   @Get('/result-url')
-  async verifyResultUrl(@Query() params: any, @Res() res) {
-    const isVerified = await this.service.verifyResultURL(params);
+  async verifyResultUrl(
+    @Query() verifyResultUrlDto: VerifyResultUrlDto,
+    @Res() res,
+  ) {
+    const isVerified = await this.service.verifyResultURL(verifyResultUrlDto);
     if (isVerified) {
       return res.send({ success: true });
     } else {
@@ -52,8 +63,11 @@ export class RobokassaController {
 
   @ApiCreatedResponse({ description: 'Payment completed successfully' })
   @Get('/success-url')
-  async verifySuccessUrl(@Query() params: any, @Res() res) {
-    const isVerified = await this.service.verifySuccessURL(params);
+  async verifySuccessUrl(
+    @Query() verifySuccessUrlDto: VerifySuccessUrlDto,
+    @Res() res,
+  ) {
+    const isVerified = await this.service.verifySuccessURL(verifySuccessUrlDto);
     if (isVerified) {
       return res.send({ success: true });
     } else {

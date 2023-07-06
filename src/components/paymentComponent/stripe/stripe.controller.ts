@@ -1,6 +1,15 @@
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { StripeService } from './stripe.service';
-import { Body, Controller, Param, Patch, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
+import { RolesGuards } from 'src/decorators/roles-guards.decorator';
+import { ROLES } from '../../../constants/roles.constants';
+import {
+  CreateSubscriptionDto,
+  CreateCustomerDto,
+  CreateProductDto,
+  CreatePriceDto,
+  CancelSubscriptionDto,
+} from './dto/stipe.dto';
 
 @ApiTags('Stripe')
 @Controller('/stripe')
@@ -10,11 +19,11 @@ export class StripeController {
   @ApiCreatedResponse({ description: 'Subscription created successfully' })
   @Post('/create-subscription')
   async createSubscription(
-    @Body('customerId') customerId: string,
-    @Body('priceId') priceId: string,
+    @Body() createSubscriptionDto: CreateSubscriptionDto,
     @Res() res,
   ) {
     try {
+      const { customerId, priceId } = createSubscriptionDto;
       const subscriptionDetails = await this.stripeService.createSubscription(
         customerId,
         priceId,
@@ -27,16 +36,14 @@ export class StripeController {
 
   @ApiCreatedResponse({ description: 'Customer created successfully' })
   @Post('/create-customer')
-  async createCustomer(@Body() requestBody: any, @Res() res) {
-    const { email, name, address, shipping } = requestBody;
+  async createCustomer(
+    @Body() createCustomerDto: CreateCustomerDto,
+    @Res() res,
+  ) {
+    const { email, name } = createCustomerDto;
 
     try {
-      const customer = await this.stripeService.createCustomer(
-        email,
-        name,
-        address,
-        shipping,
-      );
+      const customer = await this.stripeService.createCustomer(email, name);
       return res.send(customer);
     } catch (error) {
       return res.status(400).send({ error: { message: error.message } });
@@ -45,8 +52,9 @@ export class StripeController {
 
   @ApiCreatedResponse({ description: 'Product created successfully' })
   @Post('/create-product')
-  async createProduct(@Body('name') name: string, @Res() res) {
+  async createProduct(@Body() createProductDto: CreateProductDto, @Res() res) {
     try {
+      const { name } = createProductDto;
       const product = await this.stripeService.createProduct(name);
       return res.send(product);
     } catch (error) {
@@ -56,14 +64,9 @@ export class StripeController {
 
   @ApiCreatedResponse({ description: 'Price created successfully' })
   @Post('/create-price')
-  async createPrice(
-    @Body('unit_amount') unitAmount: number,
-    @Body('currency') currency: string,
-    @Body('interval') interval: string,
-    @Body('productId') productId: string,
-    @Res() res,
-  ) {
+  async createPrice(@Body() createPriceDto: CreatePriceDto, @Res() res) {
     try {
+      const { unitAmount, currency, interval, productId } = createPriceDto;
       const price = await this.stripeService.createPrice(
         unitAmount,
         currency,
@@ -76,9 +79,13 @@ export class StripeController {
     }
   }
 
+  @RolesGuards([ROLES.USER])
   @ApiCreatedResponse({ description: 'Subscription canceled successfully' })
   @Post('/cancel')
-  async cancelSubscription(@Body() body: { subscriptionId: string }) {
-    return this.stripeService.cancelSubscription(body.subscriptionId);
+  async cancelSubscription(
+    @Body() cancelSubscriptionDto: CancelSubscriptionDto,
+  ) {
+    const { email } = cancelSubscriptionDto;
+    return this.stripeService.cancelSubscription(email);
   }
 }

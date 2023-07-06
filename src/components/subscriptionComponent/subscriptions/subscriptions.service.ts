@@ -32,6 +32,11 @@ export class SubscriptionsService extends EntityService<Subscriptions> {
 
     return await this.repository.create({ ...dto, user_id: user.id });
   }
+
+  async findByUserId(id: string | number): Promise<Subscriptions> {
+    return await this.repository.findOne({ where: { user_id: id } });
+  }
+
   async hasSubscriptionEnded(userEmail: string): Promise<boolean> {
     if (!userEmail) return false;
     const user: Users | false = await this.usersService.findByEmail(userEmail);
