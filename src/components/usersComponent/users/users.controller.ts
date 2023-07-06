@@ -17,7 +17,7 @@ import { ValidationPipe } from '../../../pipes/validation.pipe';
 import { ROLES } from '../../../constants/roles.constants';
 import { RolesGuards } from '../../../decorators/roles-guards.decorator';
 import { EntityController } from '../../../classes/core/entity.controller';
-import { ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
+import { ApiTags, ApiCreatedResponse, ApiParam } from '@nestjs/swagger';
 
 @ApiTags('Users')
 @Controller('/users')
@@ -31,6 +31,7 @@ export class UsersController extends EntityController<
   }
 
   @ApiCreatedResponse({ description: 'User by email successfully found' })
+  @ApiParam({ name: 'email', description: 'User email' })
   @RolesGuards([ROLES.ADMIN])
   @Get('/email/:email')
   async findByEmail(
