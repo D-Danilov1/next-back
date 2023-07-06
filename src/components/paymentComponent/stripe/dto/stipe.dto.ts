@@ -46,7 +46,7 @@ export class CreateProductDto {
 export class CreatePriceDto {
   @ApiProperty({ example: 200 })
   @IsNumber({}, { message: 'The value must be a number' })
-  readonly unitAmount: number;
+  readonly unit_amount: number;
 
   @ApiProperty({ example: 'usd' })
   @IsString({ message: 'The value must be a string' })

@@ -66,9 +66,9 @@ export class StripeController {
   @Post('/create-price')
   async createPrice(@Body() createPriceDto: CreatePriceDto, @Res() res) {
     try {
-      const { unitAmount, currency, interval, productId } = createPriceDto;
+      const { unit_amount, currency, interval, productId } = createPriceDto;
       const price = await this.stripeService.createPrice(
-        unitAmount,
+        unit_amount,
         currency,
         interval,
         productId,
