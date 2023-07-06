@@ -1,10 +1,13 @@
+import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { StripeService } from './stripe.service';
 import { Body, Controller, Param, Patch, Post, Res } from '@nestjs/common';
 
+@ApiTags('Stripe')
 @Controller('/stripe')
 export class StripeController {
   constructor(private readonly stripeService: StripeService) {}
 
+  @ApiCreatedResponse({ description: 'Subscription created successfully' })
   @Post('/create-subscription')
   async createSubscription(
     @Body('customerId') customerId: string,
@@ -22,14 +25,7 @@ export class StripeController {
     }
   }
 
-  @Patch('prices/:id')
-  async updatePrice(
-    @Param('id') id: string,
-    @Body() metadata: { order_id: string },
-  ) {
-    return this.stripeService.updatePrice(id, metadata);
-  }
-
+  @ApiCreatedResponse({ description: 'Customer created successfully' })
   @Post('/create-customer')
   async createCustomer(@Body() requestBody: any, @Res() res) {
     const { email, name, address, shipping } = requestBody;
@@ -47,6 +43,7 @@ export class StripeController {
     }
   }
 
+  @ApiCreatedResponse({ description: 'Product created successfully' })
   @Post('/create-product')
   async createProduct(@Body('name') name: string, @Res() res) {
     try {
@@ -57,6 +54,7 @@ export class StripeController {
     }
   }
 
+  @ApiCreatedResponse({ description: 'Price created successfully' })
   @Post('/create-price')
   async createPrice(
     @Body('unit_amount') unitAmount: number,
@@ -78,6 +76,7 @@ export class StripeController {
     }
   }
 
+  @ApiCreatedResponse({ description: 'Subscription canceled successfully' })
   @Post('/cancel')
   async cancelSubscription(@Body() body: { subscriptionId: string }) {
     return this.stripeService.cancelSubscription(body.subscriptionId);

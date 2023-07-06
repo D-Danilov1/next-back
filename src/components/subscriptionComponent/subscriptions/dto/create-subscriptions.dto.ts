@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsNumber,
@@ -8,6 +9,7 @@ import {
 } from 'class-validator';
 
 export class CreateSubscriptionsDto {
+  @ApiProperty()
   @IsString({ message: 'The value must be a string' })
   @IsEmail({}, { message: 'Incorrect Email' })
   @Length(6, 128, {
@@ -15,19 +17,24 @@ export class CreateSubscriptionsDto {
   })
   readonly userEmail: string;
 
+  @ApiProperty()
   @IsNumber({}, { message: 'The value must be a number' })
   @IsPositive({ message: 'The value must be a positive number' })
   readonly subscriptions_period_id: number;
 
+  @ApiProperty()
   @IsString({ message: 'The value must be a string' })
   readonly payment_amount: string;
 
+  @ApiProperty()
   @IsString({ message: 'The value must be a string' })
   readonly start_of: string;
 
+  @ApiProperty()
   @IsString({ message: 'The value must be a string' })
   readonly end_of: string;
 
+  @ApiProperty()
   @IsOptional()
   @IsString({ message: 'The value must be a string' })
   readonly subscription_id?: string;

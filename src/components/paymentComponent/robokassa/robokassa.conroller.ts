@@ -8,11 +8,14 @@ import {
   Res,
 } from '@nestjs/common';
 import { RobokassaService } from './robokassa.service';
+import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Robokassa')
 @Controller('/robokassa')
 export class RobokassaController {
   constructor(protected service: RobokassaService) {}
 
+  @ApiCreatedResponse({ description: 'Payment link successfully received' })
   @Post('/payment-url')
   async getPaymentUrl(
     @Body('amount') amount: number,
@@ -23,20 +26,20 @@ export class RobokassaController {
     };
   }
 
+  @ApiCreatedResponse({ description: 'Subscription canceled successfully' })
   @Post('/cancel')
   async cancelSubscription(
     @Body('subscriptionId') subscriptionId: string,
   ): Promise<any> {
     try {
-      const response = await this.service.cancelSubscription(
-        subscriptionId,
-      );
+      const response = await this.service.cancelSubscription(subscriptionId);
       return response;
     } catch (error) {
       return { success: false, error: error.message };
     }
   }
 
+  @ApiCreatedResponse({ description: 'Payment completed successfully' })
   @Get('/result-url')
   async verifyResultUrl(@Query() params: any, @Res() res) {
     const isVerified = await this.service.verifyResultURL(params);
@@ -47,6 +50,7 @@ export class RobokassaController {
     }
   }
 
+  @ApiCreatedResponse({ description: 'Payment completed successfully' })
   @Get('/success-url')
   async verifySuccessUrl(@Query() params: any, @Res() res) {
     const isVerified = await this.service.verifySuccessURL(params);

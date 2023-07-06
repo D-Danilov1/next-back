@@ -44,10 +44,6 @@ export class StripeService {
       throw new Error(error.message);
     }
   }
-  async updatePrice(id: string, metadata: { order_id: string }) {
-    const price = await this.stripe.prices.update(id, { metadata });
-    return price;
-  }
 
   async createCustomer(
     email: string,

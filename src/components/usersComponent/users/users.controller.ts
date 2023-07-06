@@ -18,8 +18,9 @@ import { ValidationPipe } from '../../../pipes/validation.pipe';
 import { ROLES } from '../../../constants/roles.constants';
 import { RolesGuards } from '../../../decorators/roles-guards.decorator';
 import { EntityController } from '../../../classes/core/entity.controller';
-import axios from 'axios';
 
+import { ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
+@ApiTags('Users')
 @Controller('/users')
 export class UsersController extends EntityController<
   Users,
@@ -30,26 +31,7 @@ export class UsersController extends EntityController<
     super(service);
   }
 
-  @Post('/send')
-  async sendSMS(
-    @Body('to') to: string,
-    @Body('subject') subject: string,
-    @Body('text') text: string,
-  ): Promise<boolean> {
-    const login = 'ipvoitenko';
-    const password = 'U2k4CkT3';
-
-    try {
-      await axios.get(
-        `https://smsc.ru/sys/send.php?login=${login}&psw=${password}&phones=${to}&mes=${text}&subj=${subject}&sender=noreply.nextapp@gmail.com&mail=1`,
-      );
-      return true;
-    } catch (error) {
-      console.error('Failed to send SMS:', error);
-      return false;
-    }
-  }
-
+  @ApiCreatedResponse({ description: 'User by email successfully found' })
   @RolesGuards([ROLES.ADMIN])
   @Get('/email/:email')
   async findByEmail(
@@ -61,6 +43,7 @@ export class UsersController extends EntityController<
     };
   }
 
+  @ApiCreatedResponse({ description: 'User role added successfully' })
   @UsePipes(ValidationPipe)
   @RolesGuards([ROLES.ADMIN])
   @Put('/add/role')
@@ -73,6 +56,7 @@ export class UsersController extends EntityController<
     };
   }
 
+  @ApiCreatedResponse({ description: 'User role deleted successfully' })
   @UsePipes(ValidationPipe)
   @RolesGuards([ROLES.ADMIN])
   @Delete('/remove/role')

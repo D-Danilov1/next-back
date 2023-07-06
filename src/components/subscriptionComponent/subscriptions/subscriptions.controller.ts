@@ -4,7 +4,9 @@ import { Subscriptions } from './models/subscriptions.model';
 import { CreateSubscriptionsDto } from './dto/create-subscriptions.dto';
 import { UpdateSubscriptionsDto } from './dto/update-subscriptions.dto';
 import { EntityController } from '../../../classes/core/entity.controller';
+import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Subscriptions')
 @Controller('/subscriptions')
 export class SubscriptionsController extends EntityController<
   Subscriptions,
@@ -15,6 +17,10 @@ export class SubscriptionsController extends EntityController<
     super(service);
   }
 
+  @ApiCreatedResponse({
+    description:
+      'Boolean value about subscription expiration received successfully',
+  })
   @Get('/subscriptionEnded/:userEmail')
   async hasSubscriptionEnded(
     @Param('userEmail') userEmail: string,
