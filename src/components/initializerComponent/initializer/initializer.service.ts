@@ -107,7 +107,7 @@ export class InitializerService {
     if (account === null) {
       await this.usersService.create({
         email: 'user@gmail.com',
-        phone_number: '79829472886',
+        phone_number: '79829472885',
       });
     }
   }
