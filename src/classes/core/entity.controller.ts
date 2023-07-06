@@ -17,7 +17,6 @@ export abstract class EntityController<M, CMD, UMD> {
   protected constructor(protected service: EntityService<M>) {}
 
   @UsePipes(ValidationPipe)
-  @RolesGuards([ROLES.USER])
   @Post()
   async create(@Body() dto: CMD): Promise<{ response: M; statusCode: HttpStatus.CREATED }> {
     return {
