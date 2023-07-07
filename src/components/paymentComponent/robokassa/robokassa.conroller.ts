@@ -26,10 +26,10 @@ export class RobokassaController {
   async getPaymentUrl(
     @Body() getPaymentUrlDto: GetPaymentUrlDto,
   ): Promise<{ response: string; statusCode: number }> {
-    const { amount } = getPaymentUrlDto;
+    const { amount, period } = getPaymentUrlDto;
     return {
       statusCode: HttpStatus.OK,
-      response: await this.service.getPaymentLink(amount),
+      response: await this.service.getPaymentLink(amount, period),
     };
   }
 

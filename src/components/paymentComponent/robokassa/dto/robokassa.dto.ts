@@ -1,10 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class GetPaymentUrlDto {
   @ApiProperty({ example: '10.00' })
   @IsString({ message: 'The value must be a string' })
   readonly amount: string;
+
+  @ApiProperty({ example: 1 })
+  @IsNumber({}, { message: 'The value must be a string' })
+  readonly period: number;
 }
 
 export class CancelSubscriptionDto {
