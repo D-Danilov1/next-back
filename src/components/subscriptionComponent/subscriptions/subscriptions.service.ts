@@ -66,7 +66,7 @@ export class SubscriptionsService extends EntityService<Subscriptions> {
       where: { user_id: user.id },
     });
 
-    if (!subscription.subscription_id) {
+    if (!subscription?.subscription_id) {
       return false;
     } 
     return true
