@@ -11,22 +11,31 @@ export class RobokassaService {
   constructor(private invCounterService: InvCounterService) {}
 
   async getPaymentLink(amount, period): Promise<string> {
-    // if (period == 1) {
-    //   // return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=ffbed28d-3d31-445f-9b9d-3e3eec568bf5';
-    //   return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=8d1910f1-0ac6-4420-9797-7e9327b87db0'; // test
-    // } else if (period == 6) {
-    //   return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=275baeb1-3672-454a-a2c6-af94300e7893';
-    // } else if (period == 12) {
-    //   return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=61977ecc-b2b0-4d4e-b403-b5d31b8f77a7';
-    // }
-    const inv_id = await this.invCounterService.getNewInvId();
-    const out_sum = '0.10';
-    // Number(amount).toFixed(2);
+    const invId = await this.invCounterService.getNewInvId();
+    const outSum = '0.10';
+    const description = 'Оплата подписки';
+    const recurring = 'true';
 
-    const crc = this.generateCRC(out_sum, inv_id, this.mrh_pass1);
-    const url = `https://auth.robokassa.ru/Merchant/Recurring/Index.aspx?MerchantLogin=${this.mrh_login}&OutSum=${out_sum}&InvId=${inv_id}&Description=Next&SignatureValue=${crc}`;
+    const crc = this.generateCRC(outSum, invId, this.mrh_pass1);
+
+    const url = `https://auth.robokassa.ru/Merchant/Index.aspx?MerchantLogin=${
+      this.mrh_login
+    }&OutSum=${outSum}&InvId=${invId}&Description=${encodeURIComponent(
+      description,
+    )}&SignatureValue=${crc}&Recurring=${recurring}&IsTest=1&ExpirationDate=${this.calculateExpirationDate(
+      30,
+    )}`;
 
     return url;
+  }
+
+  calculateExpirationDate(periodInDays: number): string {
+    const currentDate = new Date();
+    const expirationDate = new Date(
+      currentDate.getTime() + periodInDays * 24 * 60 * 60 * 1000,
+    );
+    const formattedDate = expirationDate.toISOString().split('T')[0];
+    return formattedDate;
   }
 
   async cancelSubscription(subscriptionId: string): Promise<any> {
