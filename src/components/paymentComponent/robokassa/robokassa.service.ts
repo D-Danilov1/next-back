@@ -11,31 +11,14 @@ export class RobokassaService {
   constructor(private invCounterService: InvCounterService) {}
 
   async getPaymentLink(amount, period): Promise<string> {
-    const invId = await this.invCounterService.getNewInvId();
-    const outSum = '0.10';
-    const description = 'Оплата подписки';
+    const inv_id = await this.invCounterService.getNewInvId();
+    const out_sum = '0.10';
     const recurring = 'true';
 
-    const crc = this.generateCRC(outSum, invId, this.mrh_pass1);
-
-    const url = `https://auth.robokassa.ru/Merchant/Index.aspx?MerchantLogin=${
-      this.mrh_login
-    }&OutSum=${outSum}&InvId=${invId}&Description=${encodeURIComponent(
-      description,
-    )}&SignatureValue=${crc}&Recurring=${recurring}&IsTest=1&ExpirationDate=${this.calculateExpirationDate(
-      30,
-    )}`;
+    const crc = this.generateCRC(out_sum, inv_id, this.mrh_pass1);
+    const url = `https://auth.robokassa.ru/Merchant/Index.aspx?MerchantLogin=${this.mrh_login}&Recurring=${recurring}&OutSum=${out_sum}&InvId=${inv_id}&Description=Next&SignatureValue=${crc}`;
 
     return url;
-  }
-
-  calculateExpirationDate(periodInDays: number): string {
-    const currentDate = new Date();
-    const expirationDate = new Date(
-      currentDate.getTime() + periodInDays * 24 * 60 * 60 * 1000,
-    );
-    const formattedDate = expirationDate.toISOString().split('T')[0];
-    return formattedDate;
   }
 
   async cancelSubscription(subscriptionId: string): Promise<any> {
