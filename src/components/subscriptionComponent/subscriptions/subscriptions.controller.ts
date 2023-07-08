@@ -30,6 +30,18 @@ export class SubscriptionsController extends EntityController<
   }
 
   @ApiCreatedResponse({
+    description:
+      'Boolean about whether the user paid with stripe',
+  })
+  @ApiParam({ name: 'userEmail', description: 'User email' })
+  @Get('/paidWithStripe/:userEmail')
+  async paidWithStripe(
+    @Param('userEmail') userEmail: string,
+  ): Promise<boolean> {
+    return await this.service.paidWithStripe(userEmail);
+  }
+
+  @ApiCreatedResponse({
     description: 'Find subscription is successfully',
   })
   @ApiParam({ name: 'id', description: 'Subscription ID' })

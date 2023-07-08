@@ -55,4 +55,20 @@ export class SubscriptionsService extends EntityService<Subscriptions> {
     const endOfSubscription: Date = new Date(subscription.end_of);
     return currentDate > endOfSubscription;
   }
+
+  async paidWithStripe(userEmail: string): Promise<boolean> {
+    if (!userEmail) return false;
+    const user: Users | false = await this.usersService.findByEmail(userEmail);
+
+    if (!user) return false;
+
+    const subscription: Subscriptions | null = await this.repository.findOne({
+      where: { user_id: user.id },
+    });
+
+    if (!subscription.subscription_id) {
+      return false;
+    } 
+    return true
+  }
 }

@@ -12,6 +12,7 @@ export class RobokassaService {
 
   async getPaymentLink(amount, period): Promise<string> {
     if (period == 1) {
+      // return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=ffbed28d-3d31-445f-9b9d-3e3eec568bf5';
       return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=8d1910f1-0ac6-4420-9797-7e9327b87db0'; // test
     } else if (period == 6) {
       return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=275baeb1-3672-454a-a2c6-af94300e7893';
