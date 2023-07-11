@@ -56,7 +56,7 @@ export class SubscriptionsService extends EntityService<Subscriptions> {
     const currentDate: Date = new Date();
     const endOfSubscription: Date = new Date(subscription.end_of);
     console.log(currentDate, endOfSubscription)
-    return endOfSubscription < currentDate;
+    return endOfSubscription > currentDate;
   }
 
   async paidWithStripe(userEmail: string): Promise<boolean> {
