@@ -50,6 +50,8 @@ export class UsersService extends EntityService<Users> {
   async create(dto: CreateUsersDto): Promise<Users> {
     if (!dto.email)
       throw new HttpException('Email not found', HttpStatus.NOT_FOUND);
+    if (!dto.phone_number)
+          throw new HttpException('Phone number not found', HttpStatus.NOT_FOUND);
 
     const candidate: Users = await this.repository.findOne({
       where: { email: dto?.email },
