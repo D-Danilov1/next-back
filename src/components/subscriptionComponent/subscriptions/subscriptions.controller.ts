@@ -22,11 +22,11 @@ export class SubscriptionsController extends EntityController<
       'Boolean value about subscription expiration received successfully',
   })
   @ApiParam({ name: 'userEmail', description: 'User email' })
-  @Get('/subscriptionEnded/:userEmail')
-  async hasSubscriptionEnded(
+  @Get('/subscriptionActive/:userEmail')
+  async hasSubscriptionActive(
     @Param('userEmail') userEmail: string,
   ): Promise<boolean> {
-    return await this.service.hasSubscriptionEnded(userEmail);
+    return await this.service.hasSubscriptionActive(userEmail);
   }
 
   @ApiCreatedResponse({
