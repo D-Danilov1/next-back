@@ -45,7 +45,7 @@ export class SubscriptionsService extends EntityService<Subscriptions> {
     if (!user) return false;
 
     const subscription: Subscriptions | null = await this.repository.findOne({
-      where: { user_id: user.id, createdAt: 'DESC' },
+      where: { user_id: user.id },
     });
     console.log(subscription);
     if (!subscription) {
