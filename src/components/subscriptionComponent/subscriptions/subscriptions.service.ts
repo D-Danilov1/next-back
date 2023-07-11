@@ -39,6 +39,7 @@ export class SubscriptionsService extends EntityService<Subscriptions> {
 
   async hasSubscriptionActive(userEmail: string): Promise<boolean> {
     if (!userEmail) return false;
+    console.log(userEmail)
 
     const user: Users | false = await this.usersService.findByEmail(userEmail);
 
@@ -54,6 +55,7 @@ export class SubscriptionsService extends EntityService<Subscriptions> {
 
     const currentDate: Date = new Date();
     const endOfSubscription: Date = new Date(subscription.end_of);
+    console.log(currentDate, endOfSubscription)
     return endOfSubscription < currentDate;
   }
 
