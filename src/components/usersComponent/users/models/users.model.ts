@@ -25,7 +25,7 @@ export class Users extends EntityModel<Users, UserCreationAttrs> {
   })
   id: string;
 
-  @Column({ type: DataType.STRING, unique: true, allowNull: false })
+  @Column({ type: DataType.STRING, allowNull: false })
   email: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
