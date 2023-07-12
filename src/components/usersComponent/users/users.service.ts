@@ -38,11 +38,11 @@ export class UsersService extends EntityService<Users> {
   async generateAndSendPassword(dto) {
     const password = Math.random().toString(36).slice(-10);
 
-    await this.sendMail(
-      dto.email,
-      'NEXT WORKOUT APP',
-      `Your login: ${dto.email} %0AYour password:${password}%0AApp Store - https://apps.apple.com/app/next-workouts/id1458490165%0AGoogle Play - https://play.google.com/store/apps/details?id=com.simbirsoft.next`,
-    );
+    // await this.sendMail(
+    //   dto.email,
+    //   'NEXT WORKOUT APP',
+    //   `Your login: ${dto.email} %0AYour password:${password}%0AApp Store - https://apps.apple.com/app/next-workouts/id1458490165%0AGoogle Play - https://play.google.com/store/apps/details?id=com.simbirsoft.next`,
+    // );
 
     return password;
   }
