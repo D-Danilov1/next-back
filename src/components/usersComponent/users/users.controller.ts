@@ -45,7 +45,7 @@ export class UsersController extends EntityController<
 
   @ApiCreatedResponse({ description: 'User role added successfully' })
   @UsePipes(ValidationPipe)
-  @RolesGuards([ROLES.ADMIN])
+  // @RolesGuards([ROLES.ADMIN])
   @Put('/add/role')
   async addRoleToUser(
     @Body() dto: RoleToUserDto,
