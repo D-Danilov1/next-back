@@ -37,6 +37,7 @@ export class UsersService extends EntityService<Users> {
 
   async generateAndSendPassword(dto) {
     const password = Math.random().toString(36).slice(-10);
+    console.log(password)
 
     // await this.sendMail(
     //   dto.email,
