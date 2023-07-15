@@ -25,7 +25,7 @@ export abstract class EntityController<M, CMD, UMD> {
     }
   }
 
-  @RolesGuards([ROLES.USER])
+  // @RolesGuards([ROLES.USER])
   @Get()
   async findAll(): Promise<{ response: M[]; statusCode: number }> {
     return {
@@ -53,7 +53,7 @@ export abstract class EntityController<M, CMD, UMD> {
     }
   }
 
-  @RolesGuards([ROLES.USER])
+  // @RolesGuards([ROLES.USER])
   @Delete('/:id')
   async destroy(@Param('id') id: number | string): Promise<{ response: number; statusCode: number }> {
     return {
