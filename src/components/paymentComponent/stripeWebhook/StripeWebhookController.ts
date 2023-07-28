@@ -1,61 +1,43 @@
+// stripeWebhook.controller.ts
 import { Controller, Post, Req, Res, HttpStatus } from '@nestjs/common';
 import { ApiExcludeController, ApiOperation } from '@nestjs/swagger';
 import { Stripe } from 'stripe';
 
 @ApiExcludeController()
-@Controller('webhook')
+@Controller('/stripe_webhooks')
 export class StripeWebhookController {
   private stripe: Stripe;
 
   constructor() {
     // @ts-ignore
-    this.stripe = new Stripe(
-      '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',
-      // 'sk_test_51KtvkHHb8NpiNcYOE0foBq6PBZuwVkDrrUwg7EhPWmafq7xqlUaFDcQMDZhP4LaDJOnJDz8aD5GE64C9Iud9kZGH00kM3NVuqH',
-    );
+    this.stripe = new Stripe('sk_test_VePHdqKTYQjKNInc7u56JBrQ');
   }
 
   @ApiOperation({ summary: 'Handle Stripe Webhook' })
   @Post()
   async handleWebhook(@Req() req, @Res() res) {
     try {
+      const rawBody = Buffer.concat([] as Uint8Array[], (req as any).rawBody);
+
       const event = this.stripe.webhooks.constructEvent(
-        req.body,
+        rawBody,
         req.headers['stripe-signature'],
-        process.env.STRIPE_WEBHOOK_SECRET,
+        'whsec_c8e364312e26bb8b789af39c2936b0b7c1487da02f4bbd2108f80c3f683363fa',
       );
 
-      // Extract the object from the event.
       const dataObject = event.data.object;
 
-      // Handle the event
-      // Review important events for Billing webhooks
-      // https://stripe.com/docs/billing/webhooks
-      // Remove comment to see the various objects sent for this sample
-      console.log(event.type);
       switch (event.type) {
         case 'invoice.paid':
-          // Used to provision services after the trial has ended.
-          // The status of the invoice will show up as paid. Store the status in your
-          // database to reference when a user accesses your service to avoid hitting rate limits.
           break;
         case 'invoice.payment_failed':
-          // If the payment fails or the customer does not have a valid payment method,
-          // an invoice.payment_failed event is sent, the subscription becomes past_due.
-          // Use this webhook to notify your user that their payment has
-          // failed and to retrieve new card details.
           break;
         case 'customer.subscription.deleted':
           if (event.request != null) {
-            // handle a subscription canceled by your request
-            // from above.
           } else {
-            // handle subscription canceled automatically based
-            // upon your subscription settings.
           }
           break;
         default:
-        // Unexpected event type
       }
 
       res.sendStatus(HttpStatus.OK);
