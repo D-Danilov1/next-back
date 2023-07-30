@@ -18,8 +18,8 @@ export class StripeService {
   ) {
     // @ts-ignore
     this.stripe = new Stripe(
-      // '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',
-      'sk_test_VePHdqKTYQjKNInc7u56JBrQ',
+      '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',
+      // 'sk_test_VePHdqKTYQjKNInc7u56JBrQ',
     );
     this.token = new Token(config);
   }

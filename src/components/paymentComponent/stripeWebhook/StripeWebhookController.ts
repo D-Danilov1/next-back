@@ -11,7 +11,9 @@ export class StripeWebhookController {
 
   constructor(private subscriptionsService: SubscriptionsService) {
     // @ts-ignore
-    this.stripe = new Stripe('sk_test_VePHdqKTYQjKNInc7u56JBrQ');
+    this.stripe = new Stripe(
+      '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',
+    );
   }
 
   @ApiOperation({ summary: 'Handle Stripe Webhook' })
@@ -49,12 +51,12 @@ export class StripeWebhookController {
 
           if (!customer_email || !amount_paid) return;
 
-          if (amount_paid >= 4490) {
+          if (Number(amount_paid) >= 4490) {
             await this.subscriptionsService.update({
               userEmail: customer_email,
               end_of: calculateEndDate(new Date(), 12),
             });
-          } else if (amount_paid >= 3390) {
+          } else if (Number(amount_paid) >= 3390) {
             await this.subscriptionsService.update({
               userEmail: customer_email,
               end_of: calculateEndDate(new Date(), 6),
