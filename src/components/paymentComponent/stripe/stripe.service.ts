@@ -110,4 +110,45 @@ export class StripeService {
       throw new Error(error.message);
     }
   }
+
+  // async listPrices(lookupKey: string): Promise<Stripe.Price[]> {
+  //   const prices = await this.stripe.prices.list({
+  //     lookup_keys: [lookupKey],
+  //     expand: ['data.product'],
+  //   });
+  //   return prices.data;
+  // }
+
+  // async createCheckoutSession(
+  //   priceId: string,
+  // ): Promise<Stripe.Checkout.Session> {
+  //   const session = await this.stripe.checkout.sessions.create({
+  //     billing_address_collection: 'auto',
+  //     line_items: [
+  //       {
+  //         price: priceId,
+  //         quantity: 1,
+  //       },
+  //     ],
+  //     mode: 'subscription',
+  //     success_url: `https://www.next-payment.site/stripe/success?success=true&session_id={CHECKOUT_SESSION_ID}`,
+  //     cancel_url: `https://www.next-payment.site/robokassa/fail?canceled=true`,
+  //   });
+  //   return session;
+  // }
+
+  // async createPortalSession(
+  //   sessionId: string,
+  // ): Promise<Stripe.BillingPortal.Session> {
+  //   const checkoutSession = await this.stripe.checkout.sessions.retrieve(
+  //     sessionId,
+  //   );
+  //   const returnUrl = 'https://www.next-payment.site';
+  //   const portalSession = await this.stripe.billingPortal.sessions.create({
+  //     // @ts-ignore
+  //     customer: checkoutSession.customer,
+  //     return_url: returnUrl,
+  //   });
+  //   return portalSession;
+  // }
 }

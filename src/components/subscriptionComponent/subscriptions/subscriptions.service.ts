@@ -6,6 +6,7 @@ import { Users } from '../../usersComponent/users/models/users.model';
 import { UsersService } from '../../usersComponent/users/users.service';
 import { CreateSubscriptionsDto } from './dto/create-subscriptions.dto';
 import { LoggerService } from '../../loggerComponent/logger/logger.service';
+import { UpdateSubscriptionsDto } from './dto/update-subscriptions.dto';
 
 @Injectable()
 export class SubscriptionsService extends EntityService<Subscriptions> {
@@ -33,6 +34,15 @@ export class SubscriptionsService extends EntityService<Subscriptions> {
     return await this.repository.create({ ...dto, user_id: user.id });
   }
 
+  async update(dto: UpdateSubscriptionsDto) {
+    const user: Users | false = await this.usersService.findByEmail(
+      dto.userEmail,
+    );
+    if (!user) return;
+
+    return this.repository.update(dto, { where: { user_id: user.id } });
+  }
+
   async findByUserId(id: string | number): Promise<Subscriptions> {
     return await this.repository.findOne({ where: { user_id: id } });
   }
@@ -49,7 +59,6 @@ export class SubscriptionsService extends EntityService<Subscriptions> {
       order: [['createdAt', 'DESC']],
     });
 
-    console.log(subscription);
     if (!subscription) {
       return false;
     }

@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
 import { SubscriptionsService } from './subscriptions.service';
 import { Subscriptions } from './models/subscriptions.model';
 import { CreateSubscriptionsDto } from './dto/create-subscriptions.dto';
@@ -30,8 +30,7 @@ export class SubscriptionsController extends EntityController<
   }
 
   @ApiCreatedResponse({
-    description:
-      'Boolean about whether the user paid with stripe',
+    description: 'Boolean about whether the user paid with stripe',
   })
   @ApiParam({ name: 'userEmail', description: 'User email' })
   @Get('/paidWithStripe/:userEmail')

@@ -1,6 +1,7 @@
 // stripeWebhook.controller.ts
 import { Controller, Post, Req, Res, HttpStatus } from '@nestjs/common';
 import { ApiExcludeController, ApiOperation } from '@nestjs/swagger';
+import { SubscriptionsService } from '../../subscriptionComponent/subscriptions/subscriptions.service';
 import { Stripe } from 'stripe';
 
 @ApiExcludeController()
@@ -8,7 +9,7 @@ import { Stripe } from 'stripe';
 export class StripeWebhookController {
   private stripe: Stripe;
 
-  constructor() {
+  constructor(private subscriptionsService: SubscriptionsService) {
     // @ts-ignore
     this.stripe = new Stripe('sk_test_VePHdqKTYQjKNInc7u56JBrQ');
   }
@@ -17,18 +18,54 @@ export class StripeWebhookController {
   @Post()
   async handleWebhook(@Req() req, @Res() res) {
     try {
-      const rawBody = Buffer.concat([] as Uint8Array[], (req as any).rawBody);
+      const secret =
+        'whsec_c8e364312e26bb8b789af39c2936b0b7c1487da02f4bbd2108f80c3f683363fa';
+
+      const payloadString = JSON.stringify(req.body);
+
+      const header = this.stripe.webhooks.generateTestHeaderString({
+        payload: payloadString,
+        secret,
+      });
 
       const event = this.stripe.webhooks.constructEvent(
-        rawBody,
-        req.headers['stripe-signature'],
-        'whsec_c8e364312e26bb8b789af39c2936b0b7c1487da02f4bbd2108f80c3f683363fa',
+        payloadString,
+        header,
+        secret,
       );
 
       const dataObject = event.data.object;
 
+      const calculateEndDate = (startDate: any, period: any) => {
+        const endDate = new Date(startDate);
+        endDate.setMonth(endDate.getMonth() + Number(period));
+        return endDate.toISOString();
+      };
+
       switch (event.type) {
         case 'invoice.paid':
+          // @ts-ignore
+          const { customer_email, amount_paid } = dataObject;
+
+          if (!customer_email || !amount_paid) return;
+
+          if (amount_paid >= 4490) {
+            await this.subscriptionsService.update({
+              userEmail: customer_email,
+              end_of: calculateEndDate(new Date(), 12),
+            });
+          } else if (amount_paid >= 3390) {
+            await this.subscriptionsService.update({
+              userEmail: customer_email,
+              end_of: calculateEndDate(new Date(), 6),
+            });
+          } else {
+            await this.subscriptionsService.update({
+              userEmail: customer_email,
+              end_of: calculateEndDate(new Date(), 1),
+            });
+          }
+
           break;
         case 'invoice.payment_failed':
           break;
