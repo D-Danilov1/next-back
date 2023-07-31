@@ -12,12 +12,12 @@ export class RobokassaService {
 
   async getPaymentLink(amount, period): Promise<string> {
     if (period == 1) {
-      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=ffbed28d-3d31-445f-9b9d-3e3eec568bf5';
-      // return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=8d1910f1-0ac6-4420-9797-7e9327b87db0'; // test
+      // return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=21916851-5fbe-492e-998d-f21350031050';
+      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=abde0173-f4fc-42a0-8c19-c4346735d597'; // test
     } else if (period == 3) {
-      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=275baeb1-3672-454a-a2c6-af94300e7893';
+      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=aba09f16-6995-466f-9a90-370023ca7db9';
     } else if (period == 12) {
-      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=61977ecc-b2b0-4d4e-b403-b5d31b8f77a7';
+      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=1af8579b-82e8-4a7f-924c-9464eda2ecdc';
     }
   }
 

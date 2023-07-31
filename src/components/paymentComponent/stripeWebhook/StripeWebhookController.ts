@@ -23,16 +23,9 @@ export class StripeWebhookController {
       const secret =
         'whsec_c8e364312e26bb8b789af39c2936b0b7c1487da02f4bbd2108f80c3f683363fa';
 
-      const payloadString = JSON.stringify(req.body);
-
-      const header = this.stripe.webhooks.generateTestHeaderString({
-        payload: payloadString,
-        secret,
-      });
-
       const event = this.stripe.webhooks.constructEvent(
-        payloadString,
-        header,
+        req.rawBody,
+        req.headers['stripe-signature'],
         secret,
       );
 
