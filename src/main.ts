@@ -7,6 +7,8 @@ async function bootstrap() {
   const port = process.env.PORT || 5000;
   const app = await NestFactory.create(AppModule);
 
+  app.setGlobalPrefix('api')
+
   const config = new DocumentBuilder()
     .setTitle('Payment')
     .setDescription('The payment API')
