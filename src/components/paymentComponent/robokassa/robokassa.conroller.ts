@@ -74,4 +74,11 @@ export class RobokassaController {
       return res.send({ success: false });
     }
   }
+
+  @Post('/get-data')
+  async getData(@Body() data: any) {
+    console.log('Received data:', data);
+
+    return { message: 'Data received successfully', data };
+  }
 }
