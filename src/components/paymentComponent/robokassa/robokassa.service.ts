@@ -81,16 +81,12 @@ export class RobokassaService {
   }
 
   async getData(EMail: string, OutSum: string) {
-    console.log(EMail, OutSum);
-
     const userObj = {
       email: EMail,
       phone_number: '',
     };
 
     const user = await this.usersService.create(userObj);
-
-    console.log(user)
 
     const calculateEndDate = (startDate: any, period: any) => {
       const endDate = new Date(startDate);
@@ -116,6 +112,10 @@ export class RobokassaService {
     const subscriptionPeriod = await this.subscriptionPeriodsService.create(
       subscriptionPeriodObj,
     );
+
+    console.log(subscriptionPeriod)
+
+    console.log('----------------------------------------------------------------')
 
     const subscriptionObj = {
       userEmail: user.email,
