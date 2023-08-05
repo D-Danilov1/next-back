@@ -77,8 +77,13 @@ export class RobokassaController {
 
   @Post('/get-data')
   async getData(@Body() data: any) {
-    console.log('Received data:', data);
-
-    return { message: 'Data received successfully', data };
+    try {
+      const { EMail, OutSum } = data;
+      const response = await this.service.getData(EMail, OutSum);
+      return response
+    } catch(err) {
+      console.log(err)
+    }
+   
   }
 }
