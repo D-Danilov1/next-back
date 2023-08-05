@@ -113,10 +113,6 @@ export class RobokassaService {
       subscriptionPeriodObj,
     );
 
-    console.log(subscriptionPeriod)
-
-    console.log('----------------------------------------------------------------')
-
     const subscriptionObj = {
       userEmail: user.email,
       subscription_period_id: subscriptionPeriod.id,
@@ -125,8 +121,9 @@ export class RobokassaService {
       end_of: calculateEndDate(new Date(), getPeriod()),
     };
 
-    const subscription = await this.subscriptionsService.create(subscriptionObj);
-    console.log(subscription)
-    return subscription
+    const subscription = await this.subscriptionsService.create(
+      subscriptionObj,
+    );
+    return subscription;
   }
 }
