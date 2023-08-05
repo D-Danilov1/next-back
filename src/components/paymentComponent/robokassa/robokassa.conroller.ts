@@ -75,19 +75,19 @@ export class RobokassaController {
     }
   }
 
-  @Post('/create-data')
-  async getDataAll(@Body() data: any) {
-    try {
-      const { EMails, OutSum } = data;
-      for (let key of EMails) {
-        await this.service.getData(key, OutSum);
-      }
+  // @Post('/create-data')
+  // async getDataAll(@Body() data: any) {
+  //   try {
+  //     const { EMails, OutSum } = data;
+  //     for (let key of EMails) {
+  //       await this.service.getData(key, OutSum);
+  //     }
 
-      return true;
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  //     return true;
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
 
   @Post('/get-data')
   async getData(@Body() data: any) {
