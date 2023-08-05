@@ -23,8 +23,7 @@ export class RobokassaService {
       return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=21916851-5fbe-492e-998d-f21350031050';
       // return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=abde0173-f4fc-42a0-8c19-c4346735d597'; // test
     } else if (period == 3) {
-      // return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=aba09f16-6995-466f-9a90-370023ca7db9';
-      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=8d1910f1-0ac6-4420-9797-7e9327b87db0';
+      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=aba09f16-6995-466f-9a90-370023ca7db9';
     } else if (period == 12) {
       return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=1af8579b-82e8-4a7f-924c-9464eda2ecdc';
     }
