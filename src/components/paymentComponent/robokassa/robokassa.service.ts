@@ -125,6 +125,8 @@ export class RobokassaService {
       end_of: calculateEndDate(new Date(), getPeriod()),
     };
 
-    return await this.subscriptionsService.create(subscriptionObj);
+    const subscription = await this.subscriptionsService.create(subscriptionObj);
+    console.log(subscription)
+    return subscription
   }
 }
