@@ -119,7 +119,7 @@ export class RobokassaService {
 
     const subscriptionObj = {
       userEmail: user.email,
-      subscriptions_period_id: subscriptionPeriod.id,
+      subscription_period_id: subscriptionPeriod.id,
       payment_amount: Number(OutSum).toString(),
       start_of: new Date().toISOString(),
       end_of: calculateEndDate(new Date(), getPeriod()),

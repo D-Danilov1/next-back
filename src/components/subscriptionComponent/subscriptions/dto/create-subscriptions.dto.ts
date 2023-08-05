@@ -20,7 +20,7 @@ export class CreateSubscriptionsDto {
   @ApiProperty({ example: 1 })
   @IsNumber({}, { message: 'The value must be a number' })
   @IsPositive({ message: 'The value must be a positive number' })
-  readonly subscriptions_period_id: number;
+  readonly subscription_period_id: number;
 
   @ApiProperty({ example: '2000' })
   @IsString({ message: 'The value must be a string' })
