@@ -53,4 +53,15 @@ export class SubscriptionsController extends EntityController<
       response: await this.service.findByUserId(id),
     };
   }
+
+  @Post('/create-subscription')
+  async createSubscription(@Body() data: any) {
+    try {
+      const { email, period } = data;
+      const response = await this.service.createSubscription(email, period);
+      return response;
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }

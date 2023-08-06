@@ -7,6 +7,7 @@ import { UsersService } from '../../usersComponent/users/users.service';
 import { CreateSubscriptionsDto } from './dto/create-subscriptions.dto';
 import { LoggerService } from '../../loggerComponent/logger/logger.service';
 import { UpdateSubscriptionsDto } from './dto/update-subscriptions.dto';
+import { SubscriptionPeriodsService } from '../subscription-periods/subscription-periods.service';
 
 @Injectable()
 export class SubscriptionsService extends EntityService<Subscriptions> {
@@ -14,6 +15,7 @@ export class SubscriptionsService extends EntityService<Subscriptions> {
     @InjectModel(Subscriptions) protected repository: typeof Subscriptions,
     private usersService: UsersService,
     protected loggerService: LoggerService,
+    private subscriptionPeriodsService: SubscriptionPeriodsService,
   ) {
     super(repository, 'Subscriptions', loggerService);
   }
@@ -83,5 +85,42 @@ export class SubscriptionsService extends EntityService<Subscriptions> {
       return false;
     }
     return true;
+  }
+
+  async createSubscription(email: string, period: string) {
+    const userObj = {
+      email: email,
+      phone_number: '',
+    };
+
+    const user = await this.usersService.create(userObj);
+
+    const calculateEndDate = (startDate: any, period: any) => {
+      const endDate = new Date(startDate);
+      endDate.setMonth(endDate.getMonth() + Number(period));
+      return endDate.toISOString();
+    };
+
+    const subscriptionPeriodObj = {
+      name: `${period}_MONTH${Number(period) > 1 ? 'S' : ''}`,
+      period: Number(period),
+    };
+
+    const subscriptionPeriod = await this.subscriptionPeriodsService.create(
+      subscriptionPeriodObj,
+    );
+
+    const subscriptionObj = {
+      userEmail: user.email,
+      subscription_period_id: subscriptionPeriod.id,
+      payment_amount: Number(period).toString(),
+      start_of: new Date().toISOString(),
+      end_of: calculateEndDate(new Date(), period),
+    };
+
+    const subscription = await this.create(
+      subscriptionObj,
+    );
+    return subscription;
   }
 }
