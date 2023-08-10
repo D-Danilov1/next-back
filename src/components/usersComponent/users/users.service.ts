@@ -37,7 +37,7 @@ export class UsersService extends EntityService<Users> {
 
   async generateAndSendPassword(dto) {
     const password = Math.random().toString(36).slice(-10);
-    console.log(password)
+    console.log(password);
 
     // await this.sendMail(
     //   dto.email,
@@ -53,7 +53,7 @@ export class UsersService extends EntityService<Users> {
       throw new HttpException('Email not found', HttpStatus.NOT_FOUND);
 
     const candidate: Users = await this.repository.findOne({
-      where: { email: dto?.email },
+      where: { email: dto?.email.toLowerCase() },
     });
 
     if (candidate) {
@@ -69,6 +69,7 @@ export class UsersService extends EntityService<Users> {
     const user: Users = await this.repository.create({
       id: id,
       ...dto,
+      email: dto.email.toLowerCase(),
       password: password,
     });
 
@@ -84,7 +85,7 @@ export class UsersService extends EntityService<Users> {
 
   async findByEmail(email: string): Promise<Users | false> {
     const user = await this.repository.findOne({
-      where: { email: email },
+      where: { email: email.toLowerCase() },
       include: { model: Roles },
     });
 
@@ -97,7 +98,7 @@ export class UsersService extends EntityService<Users> {
 
   async addRoleToUser(dto: RoleToUserDto) {
     const user: Users = await this.repository.findOne({
-      where: { email: dto.userEmail },
+      where: { email: dto.userEmail.toLowerCase() },
     });
     const role: Roles = await this.rolesService.findByName(dto.roleName);
     if (!user || !role) {
@@ -108,7 +109,7 @@ export class UsersService extends EntityService<Users> {
 
   async removeRoleToUser(dto: RoleToUserDto) {
     const user: Users = await this.repository.findOne({
-      where: { email: dto.userEmail },
+      where: { email: dto.userEmail.toLowerCase() },
     });
     const role: Roles = await this.rolesService.findByName(dto.roleName);
     if (!user || !role) {

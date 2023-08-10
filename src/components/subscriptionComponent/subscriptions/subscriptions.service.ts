@@ -52,7 +52,7 @@ export class SubscriptionsService extends EntityService<Subscriptions> {
   async hasSubscriptionActive(userEmail: string): Promise<boolean> {
     if (!userEmail) return false;
 
-    const user: Users | false = await this.usersService.findByEmail(userEmail);
+    const user: Users | false = await this.usersService.findByEmail(userEmail.toLowerCase());
 
     if (!user) return false;
 
