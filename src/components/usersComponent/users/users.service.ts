@@ -71,6 +71,8 @@ export class UsersService extends EntityService<Users> {
       ...dto,
       email: dto.email.toLowerCase(),
       password: password,
+      // TODO: fix
+      phone_number: '8999_test',
     });
 
     const role: Roles = await this.rolesService.findByName(ROLES.USER);

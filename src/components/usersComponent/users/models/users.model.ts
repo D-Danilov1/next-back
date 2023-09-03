@@ -14,6 +14,7 @@ interface UserCreationAttrs {
   id: string;
   email: string;
   password: string;
+  phone_number: string;
 }
 
 @Table({ tableName: 'Users' })

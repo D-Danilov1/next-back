@@ -55,12 +55,9 @@ export class CreatePriceDto {
   })
   readonly currency: string;
 
-  @ApiProperty({ example: 'month' })
-  @IsString({ message: 'The value must be a string' })
-  @Length(2, 128, {
-    message: 'The interval must be at least 6 and no more than 128 characters',
-  })
-  readonly interval: string;
+  @ApiProperty({ example: 3 })
+  @IsNumber({}, { message: 'The value must be a number' })
+  readonly interval: number;
 
   @ApiProperty({ example: 'prod_1NOknXHb8NpiNcYOxGX6yf7c' })
   @IsString({ message: 'The value must be a string' })

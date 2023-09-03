@@ -93,15 +93,17 @@ export class StripeService {
   async createPrice(
     unitAmount: number,
     currency: string,
-    interval: string,
+    interval: number,
     productId: string,
   ) {
     try {
       const price = await this.stripe.prices.create({
         unit_amount: unitAmount,
         currency,
-        // @ts-ignore
-        recurring: { interval },
+        recurring: { 
+          interval: 'month',
+          interval_count: interval 
+        },
         product: productId,
       });
 
