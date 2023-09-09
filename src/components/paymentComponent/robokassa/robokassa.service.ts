@@ -20,12 +20,12 @@ export class RobokassaService {
 
   async getPaymentLink(amount, period): Promise<string> {
     if (period == 1) {
-      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=295ef70b-0ad5-4c00-9ad5-74ce9e8df60b';
+      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=21916851-5fbe-492e-998d-f21350031050';
       // return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=abde0173-f4fc-42a0-8c19-c4346735d597'; // test
-    } else if (period == 3) {
-      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=a79660c1-6af8-47c5-ac9e-2498fea001dd';
+    } else if (period == 6) {
+      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=aba09f16-6995-466f-9a90-370023ca7db9';
     } else if (period == 12) {
-      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=d4250be4-6aec-4e54-9a1a-57545a2e2c87';
+      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=1af8579b-82e8-4a7f-924c-9464eda2ecdc';
     }
   }
 
@@ -80,9 +80,9 @@ export class RobokassaService {
     return my_crc?.toUpperCase() === SignatureValue?.toUpperCase();
   }
 
-  async getData(email: string, OutSum: string) {
+  async getData(EMail: string, OutSum: string) {
     const userObj = {
-      email: email,
+      email: EMail,
       phone_number: '',
     };
 
@@ -95,11 +95,11 @@ export class RobokassaService {
     };
 
     const getPeriod = () => {
-      if (Number(OutSum) <= 990) {
+      if (Number(OutSum) <= 600) {
         return 1;
-      } else if (Number(OutSum) <= 2490) {
-        return 3;
-      } else if (Number(OutSum) <= 7990) {
+      } else if (Number(OutSum) <= 3000) {
+        return 6;
+      } else if (Number(OutSum) <= 4000) {
         return 12;
       }
     };
