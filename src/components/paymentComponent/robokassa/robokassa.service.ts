@@ -22,10 +22,10 @@ export class RobokassaService {
     if (period == 1) {
       return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=21916851-5fbe-492e-998d-f21350031050';
       // return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=abde0173-f4fc-42a0-8c19-c4346735d597'; // test
-    } else if (period == 6) {
-      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=aba09f16-6995-466f-9a90-370023ca7db9';
+    } else if (period == 3) {
+      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=046bc3b8-53ad-4579-8ee6-eb546937b603';
     } else if (period == 12) {
-      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=1af8579b-82e8-4a7f-924c-9464eda2ecdc';
+      return 'https://auth.robokassa.ru/RecurringSubscriptionPage/Subscription/Subscribe?SubscriptionId=6f0ce4e1-a331-4511-a34e-db2cbe100a83';
     }
   }
 
@@ -80,9 +80,9 @@ export class RobokassaService {
     return my_crc?.toUpperCase() === SignatureValue?.toUpperCase();
   }
 
-  async getData(EMail: string, OutSum: string) {
+  async getData(Email: string, OutSum: string) {
     const userObj = {
-      email: EMail,
+      email: Email,
       phone_number: '',
     };
 
@@ -95,11 +95,11 @@ export class RobokassaService {
     };
 
     const getPeriod = () => {
-      if (Number(OutSum) <= 600) {
+      if (Number(OutSum) <= 590) {
         return 1;
-      } else if (Number(OutSum) <= 3000) {
-        return 6;
-      } else if (Number(OutSum) <= 4000) {
+      } else if (Number(OutSum) <= 1590) {
+        return 3;
+      } else if (Number(OutSum) <= 4490) {
         return 12;
       }
     };
