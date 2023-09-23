@@ -13,6 +13,7 @@ import { RobokassaModule } from './components/paymentComponent/robokassa/robokas
 import { StripeModule } from './components/paymentComponent/stripe/stripe.module';
 import { StripeWebhookController } from './components/paymentComponent/stripeWebhook/StripeWebhookController';
 import { InvCounterModule } from './components/paymentComponent/invCounter/invCounter.module';
+import { AlexgolduniversityController } from './components/alexgolduniversity/alexgolduniversity.controller';
 
 @Module({
   imports: [
@@ -46,6 +47,6 @@ import { InvCounterModule } from './components/paymentComponent/invCounter/invCo
     StripeModule,
     InvCounterModule,
   ],
-  controllers: [StripeWebhookController],
+  controllers: [StripeWebhookController, AlexgolduniversityController],
 })
 export class AppModule {}
