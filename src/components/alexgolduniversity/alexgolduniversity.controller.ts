@@ -14,6 +14,5 @@ export class AlexgolduniversityController {
     await LeadDyno.recordPurchase(dto.sender_email, {
       purchase_amount: '49'
     });
-    return 201;
   }
 }
