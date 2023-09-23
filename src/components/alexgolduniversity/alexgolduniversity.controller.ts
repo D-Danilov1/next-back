@@ -1,13 +1,12 @@
 import {
   Body,
-  Controller, Post,
+  Controller, Post, Redirect,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('alexgolduniversity')
 @Controller('/alexgolduniversity')
 export class AlexgolduniversityController {
   @Post()
+  @Redirect('https://alexgolduniversity.com/success-page', 302)
   async create(@Body() dto) {
     console.log(dto)
     const LeadDyno = require('https://static.leaddyno.com/js')
