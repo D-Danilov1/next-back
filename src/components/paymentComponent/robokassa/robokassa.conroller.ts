@@ -15,6 +15,7 @@ import {
   VerifyResultUrlDto,
   VerifySuccessUrlDto,
 } from './dto/robokassa.dto';
+import { Helper } from 'src/classes/helper';
 
 @ApiTags('Robokassa')
 @Controller('/robokassa')
@@ -92,11 +93,13 @@ export class RobokassaController {
   @Post('/get-data')
   async getData(@Body() data: any) {
     try {
+      Helper.log(data, 'robokassa get-data: ')
       const { EMail, OutSum } = data;
       console.log(EMail, OutSum);
       const response = await this.service.getData(EMail, OutSum);
       return response;
     } catch (err) {
+      Helper.log(err, 'robokassa err: ')
       console.log(err);
     }
   }

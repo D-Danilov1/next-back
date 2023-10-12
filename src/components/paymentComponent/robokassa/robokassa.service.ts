@@ -95,7 +95,7 @@ export class RobokassaService {
     };
 
     const getPeriod = () => {
-      if (Number(OutSum) <= 590) {
+      if (Number(OutSum) <= 599) {
         return 1;
       } else if (Number(OutSum) <= 1590) {
         return 3;

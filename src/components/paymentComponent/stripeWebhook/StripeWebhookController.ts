@@ -3,6 +3,7 @@ import { Controller, Post, Req, Res, HttpStatus } from '@nestjs/common';
 import { ApiExcludeController, ApiOperation } from '@nestjs/swagger';
 import { SubscriptionsService } from '../../subscriptionComponent/subscriptions/subscriptions.service';
 import { Stripe } from 'stripe';
+import { Helper } from 'src/classes/helper';
 
 @ApiExcludeController()
 @Controller('/stripe_webhooks')
@@ -37,6 +38,9 @@ export class StripeWebhookController {
         return endDate.toISOString();
       };
 
+      Helper.log(dataObject, 'stripe_webhooks dataObject: ')
+      Helper.log(event.type, 'stripe_webhooks event.type: ')
+
       switch (event.type) {
         case 'invoice.paid':
           // @ts-ignore
@@ -49,10 +53,10 @@ export class StripeWebhookController {
               userEmail: customer_email,
               end_of: calculateEndDate(new Date(), 12),
             });
-          } else if (Number(amount_paid) >= 3390) {
+          } else if (Number(amount_paid) >= 1490) {
             await this.subscriptionsService.update({
               userEmail: customer_email,
-              end_of: calculateEndDate(new Date(), 6),
+              end_of: calculateEndDate(new Date(), 3),
             });
           } else {
             await this.subscriptionsService.update({
