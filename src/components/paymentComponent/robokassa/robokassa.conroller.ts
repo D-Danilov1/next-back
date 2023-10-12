@@ -15,7 +15,7 @@ import {
   VerifyResultUrlDto,
   VerifySuccessUrlDto,
 } from './dto/robokassa.dto';
-import { Helper } from 'src/classes/helper';
+import { Helper } from '../../../classes/helper';
 
 @ApiTags('Robokassa')
 @Controller('/robokassa')

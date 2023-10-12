@@ -3,7 +3,7 @@ import { Controller, Post, Req, Res, HttpStatus } from '@nestjs/common';
 import { ApiExcludeController, ApiOperation } from '@nestjs/swagger';
 import { SubscriptionsService } from '../../subscriptionComponent/subscriptions/subscriptions.service';
 import { Stripe } from 'stripe';
-import { Helper } from 'src/classes/helper';
+import { Helper } from '../../../classes/helper';
 
 @ApiExcludeController()
 @Controller('/stripe_webhooks')
